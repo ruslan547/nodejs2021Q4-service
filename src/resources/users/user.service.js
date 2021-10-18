@@ -6,11 +6,7 @@ const getAll = () => usersRepo.getAll();
 
 const getUser = (id) => usersRepo.getUser(id);
 
-const createUser = (body) => {
-  const id = uuid();
-
-  return usersRepo.createUser({ ...body, id });
-}
+const createUser = (body) => usersRepo.createUser({ ...body, id: uuid() });
 
 const updateUser = (id, data) => usersRepo.updateUser(id, data);
 

@@ -4,13 +4,13 @@ const tasksRepo = require('./task.memory.repository')
 
 const getAll = (boardId) => tasksRepo.getAll(boardId);
 
-const getById = (id) => tasksRepo.getById(id);
+const getById = (boardId, id) => tasksRepo.getById(boardId, id);
 
-const create = (body) => tasksRepo.create({ ...body, id: uuid() });
+const create = (boardId, body) => tasksRepo.create(boardId,{ ...body, id: uuid() });
 
-const update = (id, data) => tasksRepo.update(id, data);
+const update = (boardId, id, data) => tasksRepo.update(boardId, id, data);
 
-const deleteById = (id) => tasksRepo.deleteById(id);
+const deleteById = (boardId, id) => tasksRepo.deleteById(boardId, id);
 
 module.exports = {
   getAll,

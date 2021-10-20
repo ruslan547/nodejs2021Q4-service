@@ -1,4 +1,7 @@
 const User = require('./user.model');
+const { Board } = require('../boards/board.model');
+
+const { board } = Board;
 
 let users = [];
 
@@ -37,6 +40,14 @@ const deleteUser = async (id) => {
   }
 
   users = users.filter(item => item.id !== id);
+
+  board.columns.forEach(col => {
+    col.tasks.forEach(task => {
+      if (task.id === id) {
+        task.setUserId(null);
+      }
+    });
+  })
 
   return deletedUser;
 }

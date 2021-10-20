@@ -1,13 +1,17 @@
-class Task {
+const { Updatable } = require('../../common/entity/updatable');
+
+class Task extends Updatable {
   constructor({
     id,
-    title,
-    order,
-    description,
+    title = 'title',
+    order = 'order',
+    description = 'description',
     userId,
     boardId,
     columnId
   }) {
+    super();
+
     this.id = id;
     this.title = title;
     this.order = order;
@@ -15,6 +19,10 @@ class Task {
     this.userId = userId;
     this.boardId = boardId;
     this.columnId = columnId;
+  }
+
+  setUserId(id) {
+    this.userId = id;
   }
 }
 

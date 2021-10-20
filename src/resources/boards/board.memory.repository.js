@@ -1,6 +1,6 @@
 const { Board } = require('./board.model');
 
-let boards = [];
+const { boards } = Board;
 
 const getAll = async () => boards;
 
@@ -12,26 +12,23 @@ const create = async (data) => {
 };
 
 const update = async (id, data) => {
-  const prevBoard = boards.find(item => item.id === id);
+  const board = boards.find(item => item.id === id);
 
-  if (!prevBoard) {
+  if (!board) {
     return null;
   }
 
-  boards = boards.filter(item => item.id !== id);
-  boards.push(new Board({ id, ...data }));
-
-  return boards[boards.length - 1];
+  return board.update(data);
 };
 
 const deleteById = async (id) => {
-  const deletedBoard = boards.find(item => item.id === id);
+  const index = boards.findIndex(item => item.id === id);
 
-  if (!deletedBoard) {
+  if (index === -1) {
     return null;
   }
 
-  boards = boards.filter(item => item.id !== id);
+  const [deletedBoard] = boards.splice(index, 1);
 
   return deletedBoard;
 }

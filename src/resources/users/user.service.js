@@ -1,16 +1,14 @@
-const { v4: uuid } = require('uuid');
-
 const usersRepo = require('./user.memory.repository');
 
 const getAll = () => usersRepo.getAll();
 
-const getUser = (id) => usersRepo.getUser(id);
+const getUser = (id) => usersRepo.getById(id);
 
-const createUser = (body) => usersRepo.createUser({ ...body, id: uuid() });
+const createUser = (data) => usersRepo.create(data);
 
-const updateUser = (id, data) => usersRepo.updateUser(id, data);
+const updateUser = (id, data) => usersRepo.update(id, data);
 
-const deleteUser = (id) => usersRepo.deleteUser(id);
+const deleteUser = (id) => usersRepo.deleteById(id);
 
 module.exports = {
   getAll,

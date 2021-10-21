@@ -14,7 +14,10 @@ const getById = async (boardId, id) => {
   const board = await boardsRepo.getById(boardId);
 
   return board?.columns
-    .reduce((ac, col) => ac.push(...col.tasks), [])
+    .reduce((ac, col) => {
+      ac.push(...col.tasks);
+      return ac;
+    }, [])
     .find(item => item.id === id);
 };
 
@@ -35,8 +38,11 @@ const create = async (boardId, data) => {
 
   const lastColumn = columns[length - 1];
   const { tasks } = lastColumn;
+  const columnId = lastColumn.id;
 
-  tasks.push(new Task(data));
+  tasks.push(
+    new Task({ ...data, boardId, columnId})
+  );
 
   return tasks[tasks.length - 1];
 };
@@ -49,7 +55,10 @@ const update = async (boardId, id, data) => {
   }
 
   const task = board?.columns
-    .reduce((ac, col) => ac.push(...col.tasks), [])
+    .reduce((ac, col) => {
+      ac.push(...col.tasks);
+      return ac;
+    }, [])
     .find(item => item.id === id);
 
   if (!task) {

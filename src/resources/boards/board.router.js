@@ -10,11 +10,6 @@ router
     res.json(boards);
   })
   .post(async (req, res) => {
-    if (!req.body) {
-      res.status(400);
-      return;
-    }
-
     const board = await boardsService.create(req.body);
 
     res.status(201).json(board);
@@ -24,12 +19,6 @@ router
   .route('/:boardId')
   .get(async (req, res) => {
     const { boardId } = req.params;
-
-    if (!boardId) {
-      res.status(400);
-      return;
-    }
-
     const board = await boardsService.getById(boardId);
 
     if (!board) {
@@ -41,12 +30,6 @@ router
   })
   .put(async (req, res) => {
     const { params: { boardId }, body } = req;
-
-    if (!boardId || !body) {
-      res.status(400);
-      return;
-    }
-
     const board = await boardsService.update(boardId, body);
 
     if (!board) {
@@ -58,12 +41,6 @@ router
   })
   .delete(async (req, res) => {
     const { boardId } = req.params;
-
-    if (!boardId) {
-      res.status(400);
-      return;
-    }
-
     const board = await boardsService.deleteById(boardId);
 
     if (!board) {

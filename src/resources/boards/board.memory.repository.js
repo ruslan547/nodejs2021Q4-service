@@ -1,37 +1,14 @@
 const { Board } = require('./board.model');
 
-const { boards } = Board;
+const getAll = async () => Board.getBoards();
 
-const getAll = async () => boards;
+const getById = async (id) => Board.getById(id);
 
-const getById = async (id) => boards.find(item => item.id === id);
+const create = async (data) => Board.add(new Board(data));
 
-const create = async (data) => {
-  boards.push(new Board(data));
-  return boards[boards.length - 1];
-};
+const update = async (id, data) => Board.updateById(id, data);
 
-const update = async (id, data) => {
-  const board = boards.find(item => item.id === id);
-
-  if (!board) {
-    return null;
-  }
-
-  return board.update(data);
-};
-
-const deleteById = async (id) => {
-  const index = boards.findIndex(item => item.id === id);
-
-  if (index === -1) {
-    return null;
-  }
-
-  const [deletedBoard] = boards.splice(index, 1);
-
-  return deletedBoard;
-}
+const deleteById = async (id) => Board.deleteById(id);
 
 module.exports = {
   getAll,

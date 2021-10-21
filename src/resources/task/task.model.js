@@ -1,8 +1,9 @@
+const { v4: uuid } = require('uuid');
 const { Updatable } = require('../../common/entity/updatable');
 
 class Task extends Updatable {
   constructor({
-    id,
+    id = uuid(),
     title = 'title',
     order = 'order',
     description = 'description',

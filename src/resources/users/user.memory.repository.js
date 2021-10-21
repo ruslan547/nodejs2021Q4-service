@@ -1,61 +1,32 @@
-const User = require('./user.model');
+const { User } = require('./user.model');
 const { Board } = require('../boards/board.model');
 
-const { board } = Board;
+const getAll = async () => User.getUsers();
 
-let users = [];
+const getById = async (id) => User.getById(id);
 
-const getAll = async () => users;
+const create = async (data) => User.add(new User(data));
 
-const getUser = async (id) => users.find(item => item.id === id);
+const update = async (id, data) => User.updateById(id, data);
 
-const createUser = async (data) => {
-  const user = new User(data);
-
-  users.push(user);
-
-  return user;
-};
-
-const updateUser = async (id, data) => {
-  const prevUser = users.find(item => item.id === id);
-
-  if (!prevUser) {
-    return null;
-  }
-
-  const updatedUser = new User({ id, ...data });
-
-  users = users.filter(item => item.id !== id);
-  users.push(updatedUser);
-
-  return updatedUser;
-};
-
-const deleteUser = async (id) => {
-  const deletedUser = users.find(item => item.id === id);
-
-  if (!deletedUser) {
-    return null;
-  }
-
-  users = users.filter(item => item.id !== id);
-
-  board.columns.forEach(col => {
-    col.tasks.forEach(task => {
-      if (task.id === id) {
-        task.setUserId(null);
-      }
+const deleteById = async (id) => {
+  Board.getBoards().forEach(board => {
+    board.columns.forEach(col => {
+      col.tasks.forEach(task => {
+        if (task.userId === id) {
+          task.setUserId(null);
+        }
+      });
     });
-  })
+  });
 
-  return deletedUser;
+  return User.deleteById(id);
 }
 
 module.exports = {
   getAll,
-  getUser,
-  createUser,
-  updateUser,
-  deleteUser
+  getById,
+  create,
+  update,
+  deleteById
 };

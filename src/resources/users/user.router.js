@@ -1,6 +1,6 @@
 const router = require('express').Router();
-const User = require('./user.model');
 const usersService = require('./user.service');
+const { User } = require('./user.model');
 
 router
   .route('/')
@@ -10,11 +10,6 @@ router
     res.json(users.map(User.toResponse));
   })
   .post(async (req, res) => {
-    if (!req.body) {
-      res.status(400);
-      return;
-    }
-
     const user = await usersService.createUser(req.body);
 
     res.status(201).json(User.toResponse(user));
@@ -24,12 +19,6 @@ router
   .route('/:userId')
   .get(async (req, res) => {
     const { userId } = req.params;
-
-    if (!userId) {
-      res.status(400);
-      return;
-    }
-
     const user = await usersService.getUser(userId);
 
     if (!user) {
@@ -41,12 +30,6 @@ router
   })
   .put(async (req, res) => {
     const { params: { userId }, body } = req;
-
-    if (!userId || !body) {
-      res.status(400);
-      return;
-    }
-
     const user = await usersService.updateUser(userId, body);
 
     if (!user) {
@@ -58,12 +41,6 @@ router
   })
   .delete(async (req, res) => {
     const { userId } = req.params;
-
-    if (!userId) {
-      res.status(400);
-      return;
-    }
-
     const user = await usersService.deleteUser(userId);
 
     if (!user) {
@@ -72,6 +49,6 @@ router
     }
 
     res.json(User.toResponse(user));
-  })
+  });
 
 module.exports = router;

@@ -1,4 +1,5 @@
 const { v4: uuid } = require('uuid');
+
 const { Updatable } = require('../../common/entity/updatable');
 
 const users = [];

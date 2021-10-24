@@ -1,5 +1,5 @@
 const { User } = require('./user.model');
-const { Board } = require('../boards/board.model');
+const { Task } = require('../task/task.model');
 
 const getAll = async () => User.getUsers();
 
@@ -10,14 +10,10 @@ const create = async (data) => User.add(new User(data));
 const update = async (id, data) => User.updateById(id, data);
 
 const deleteById = async (id) => {
-  Board.getBoards().forEach(board => {
-    board.columns.forEach(col => {
-      col.tasks.forEach(task => {
-        if (task.userId === id) {
-          task.setUserId(null);
-        }
-      });
-    });
+  Task.getTasks().forEach(task => {
+    if(task.userId === id) {
+      task.setUserId(null);
+    }
   });
 
   return User.deleteById(id);

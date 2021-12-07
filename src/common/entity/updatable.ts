@@ -1,15 +1,14 @@
-class Updatable {
-  update(data) {
+type UpdateData = Record<string, string>;
+
+export class Updatable {
+  update(data: UpdateData) {
     Object
       .entries(data)
-      .forEach(([key, value]) => {
+      .forEach(([key, value])=> {
+        //@ts-ignore
         this[key] = value;
       });
 
     return this;
   }
-}
-
-module.exports = {
-  Updatable
 }

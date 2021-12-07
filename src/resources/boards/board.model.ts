@@ -1,6 +1,6 @@
 const { v4: uuid } = require('uuid');
 
-const { Updatable } = require('../../common/entity/updatable');
+import { Updatable } from '../../common/entity/updatable';
 const { Column } = require('./column.model');
 
 const boards = [];

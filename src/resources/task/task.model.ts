@@ -4,7 +4,7 @@ const { Updatable } = require('../../common/entity/updatable');
 
 const tasks = [];
 
-class Task extends Updatable {
+export class Task extends Updatable {
   constructor({
     id = uuid(),
     title = 'title',
@@ -61,7 +61,3 @@ class Task extends Updatable {
     this.userId = id;
   }
 }
-
-module.exports = {
-  Task
-};

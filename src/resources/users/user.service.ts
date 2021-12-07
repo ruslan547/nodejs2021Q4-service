@@ -1,19 +1,14 @@
+import { UpdateData } from "../../common/entity/updatable";
+import { UserOptions } from "./user.model";
+
 const usersRepo = require('./user.memory.repository');
 
-const getAll = () => usersRepo.getAll();
+export const getAll = () => usersRepo.getAll();
 
-const getUser = (id) => usersRepo.getById(id);
+export const getUser = (id: string) => usersRepo.getById(id);
 
-const createUser = (data) => usersRepo.create(data);
+export const createUser = (data: UserOptions) => usersRepo.create(data);
 
-const updateUser = (id, data) => usersRepo.update(id, data);
+export const updateUser = (id: string, data: UpdateData) => usersRepo.update(id, data);
 
-const deleteUser = (id) => usersRepo.deleteById(id);
-
-module.exports = {
-  getAll,
-  getUser,
-  createUser,
-  updateUser,
-  deleteUser
-};
+export const deleteUser = (id: string) => usersRepo.deleteById(id);

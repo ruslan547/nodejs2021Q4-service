@@ -1,16 +1,27 @@
-const { v4: uuid } = require('uuid');
+import { v4 as uuid } from 'uuid';
+import { Updatable, UpdateData } from '../../common/entity/updatable';
 
-const { Updatable } = require('../../common/entity/updatable');
+const users: User[] = [];
 
-const users = [];
+export interface UserOptions {
+  id: string;
+  name: string;
+  login: string;
+  password: string;
+}
 
-class User extends Updatable {
+export class User extends Updatable {
+  id: string;
+  name: string;
+  login: string;
+  password: string;
+
   constructor({
     id = uuid(),
     name = 'USER',
     login = 'user',
     password = 'P@55w0rd'
-  }) {
+  }: UserOptions) {
     super();
 
     this.id = id;
@@ -19,7 +30,7 @@ class User extends Updatable {
     this.password = password;
   }
 
-  static toResponse(user) {
+  static toResponse(user: User) {
     const { id, name, login } = user;
     return { id, name, login };
   }
@@ -28,25 +39,23 @@ class User extends Updatable {
     return [...users];
   }
 
-  static getById(id) {
+  static getById(id: string) {
     const user = users.find(item => item.id === id);
     return user ?? null;
   }
 
-  static add(user) {
+  static add(user: User) {
     users.push(user);
     return user;
   }
 
-  static updateById(id, data) {
+  static updateById(id: string, data: UpdateData) {
     const user = User.getById(id);
     return user ? user.update(data) : null;
   }
 
-  static deleteById(id) {
+  static deleteById(id: string) {
     const index = users.findIndex(item => item.id === id);
     return (index !== -1) ? users.splice(index, 1)[0] : null;
   }
 }
-
-module.exports = { User };

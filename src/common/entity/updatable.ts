@@ -1,4 +1,4 @@
-type UpdateData = Record<string, string>;
+export type UpdateData = Record<string, string>;
 
 export class Updatable {
   update(data: UpdateData) {

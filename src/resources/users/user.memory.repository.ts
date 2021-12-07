@@ -1,16 +1,17 @@
-const { User } = require('./user.model');
-const { Task } = require('../task/task.model');
+import { UpdateData } from '../../common/entity/updatable';
+import { User, UserOptions } from './user.model';
+import { Task } from '../task/task.model';
 
-const getAll = async () => User.getUsers();
+export const getAll = async () => User.getUsers();
 
-const getById = async (id) => User.getById(id);
+export const getById = async (id: string) => User.getById(id);
 
-const create = async (data) => User.add(new User(data));
+export const create = async (data: UserOptions) => User.add(new User(data));
 
-const update = async (id, data) => User.updateById(id, data);
+export const update = async (id: string, data: UpdateData) => User.updateById(id, data);
 
-const deleteById = async (id) => {
-  Task.getTasks().forEach(task => {
+export const deleteById = async (id: string) => {
+  Task.getTasks().forEach((task: Task) => {
     if(task.userId === id) {
       task.setUserId(null);
     }
@@ -18,11 +19,3 @@ const deleteById = async (id) => {
 
   return User.deleteById(id);
 }
-
-module.exports = {
-  getAll,
-  getById,
-  create,
-  update,
-  deleteById
-};

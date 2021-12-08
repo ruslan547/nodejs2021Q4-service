@@ -1,19 +1,13 @@
-const { Task } = require('./task.model');
+import { UpdateData } from '../../common/entity/updatable';
+import { Task, TaskOption } from './task.model';
 
-const getAll = async (boardId) => Task.getTaskByBoardId(boardId);
+export const getAll = async (boardId: string) => Task.getTaskByBoardId(boardId);
 
-const getById = async (id) => Task.getTaskById(id);
+export const getById = async (id: string) => Task.getTaskById(id);
 
-const create = async (boardId, data) => Task.add(new Task({ ...data, boardId }));
+export const create =
+  async (boardId: string, data: TaskOption) => Task.add(new Task({ ...data, boardId }));
 
-const update = async (id, data) => Task.updateById(id, data);
+export const update = async (id: string, data: UpdateData) => Task.updateById(id, data);
 
-const deleteById = async (id) => Task.deleteById(id);
-
-module.exports = {
-  getAll,
-  getById,
-  create,
-  update,
-  deleteById
-};
+export const deleteById = async (id: string) => Task.deleteById(id);

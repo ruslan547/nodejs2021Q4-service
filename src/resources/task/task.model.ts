@@ -1,10 +1,27 @@
-const { v4: uuid } = require('uuid');
+import { UpdateData, Updatable } from "../../common/entity/updatable";
+import { v4 as uuid } from "uuid";
 
-const { Updatable } = require('../../common/entity/updatable');
+const tasks: Task[] = [];
 
-const tasks = [];
+export interface TaskOption {
+  id: string;
+  title: string;
+  order: string;
+  description: string
+  userId: string | null;
+  boardId: string;
+  columnId: string;
+}
 
 export class Task extends Updatable {
+  id: string;
+  title: string;
+  order: string;
+  description: string;
+  userId: string | null;
+  boardId: string;
+  columnId: string;
+
   constructor({
     id = uuid(),
     title = 'title',
@@ -13,7 +30,7 @@ export class Task extends Updatable {
     userId,
     boardId,
     columnId
-  }) {
+  }: TaskOption) {
     super();
 
     this.id = id;
@@ -29,25 +46,25 @@ export class Task extends Updatable {
     return [...tasks];
   }
 
-  static getTaskByBoardId(boardId) {
+  static getTaskByBoardId(boardId: string) {
     return Task.getTasks()
       .filter(task => task.boardId === boardId);
   }
 
-  static getTaskById(id) {
+  static getTaskById(id: string) {
     return Task.getTasks().find(task => task.id === id);
   }
 
-  static add(task) {
+  static add(task: Task) {
     tasks.push(task);
     return task;
   }
 
-  static updateById(id, data) {
+  static updateById(id: string, data: UpdateData) {
     return Task.getTaskById(id)?.update(data);
   }
 
-  static deleteById(id) {
+  static deleteById(id: string) {
     const index = tasks.findIndex(item => item.id === id);
 
     if (index === -1) {
@@ -57,7 +74,7 @@ export class Task extends Updatable {
     return  tasks.splice(index, 1)[0];
   }
 
-  setUserId(id) {
+  setUserId(id: string | null) {
     this.userId = id;
   }
 }

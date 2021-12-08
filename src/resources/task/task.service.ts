@@ -1,19 +1,13 @@
-const tasksRepo = require('./task.memory.repository')
+import { UpdateData } from "../../common/entity/updatable";
+import * as tasksRepo from "./task.memory.repository";
+import { TaskOption } from "./task.model";
 
-const getAll = (boardId) => tasksRepo.getAll(boardId);
+export const getAll = (boardId: string) => tasksRepo.getAll(boardId);
 
-const getById = (id) => tasksRepo.getById(id);
+export const getById = (id: string) => tasksRepo.getById(id);
 
-const create = (boardId, body) => tasksRepo.create(boardId, body);
+export const create = (boardId: string, body: TaskOption) => tasksRepo.create(boardId, body);
 
-const update = (id, data) => tasksRepo.update(id, data);
+export const update = (id: string, data: UpdateData) => tasksRepo.update(id, data);
 
-const deleteById = (id) => tasksRepo.deleteById(id);
-
-module.exports = {
-  getAll,
-  getById,
-  create,
-  update,
-  deleteById
-};
+export const deleteById = (id: string) => tasksRepo.deleteById(id);

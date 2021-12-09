@@ -1,19 +1,13 @@
-const boardsRepo = require('./board.memory.repository');
+import { UpdateData } from "../../common/entity/updatable";
+import * as boardsRepo from "./board.memory.repository";
+import { BoardOption } from "./board.model";
 
-const getAll = () => boardsRepo.getAll();
+export const getAll = () => boardsRepo.getAll();
 
-const getById = (id) => boardsRepo.getById(id);
+export const getById = (id: string) => boardsRepo.getById(id);
 
-const create = (body) => boardsRepo.create(body);
+export const create = (body: BoardOption) => boardsRepo.create(body);
 
-const update = (id, data) => boardsRepo.update(id, data);
+export const update = (id: string, data: UpdateData) => boardsRepo.update(id, data);
 
-const deleteById = (id) => boardsRepo.deleteById(id);
-
-module.exports = {
-  getAll,
-  getById,
-  create,
-  update,
-  deleteById
-};
+export const deleteById = (id: string) => boardsRepo.deleteById(id);

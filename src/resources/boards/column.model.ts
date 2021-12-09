@@ -1,13 +1,13 @@
-const { v4: uuid } = require('uuid');
+import { v4 as uuid } from "uuid";
 
-class Column {
+export class Column {
+  id: string;
+  title: string;
+  order: number;
+
   constructor({ id = uuid(), title = 'title', order = 1 }) {
     this.id = id;
     this.title = title;
     this.order = order;
   }
 }
-
-module.exports = {
-  Column
-};

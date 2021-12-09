@@ -1,12 +1,21 @@
-const { v4: uuid } = require('uuid');
+import { UpdateData, Updatable } from "../../common/entity/updatable";
+import { v4 as uuid } from "uuid";
+import { Column } from "./column.model";
 
-import { Updatable } from '../../common/entity/updatable';
-const { Column } = require('./column.model');
+const boards: Board[] = [];
 
-const boards = [];
+export interface BoardOption {
+  id: string;
+  title: string;
+  columns: Column[];
+}
 
-class Board extends Updatable {
-  constructor({ id = uuid(), title = 'title', columns = [] }) {
+export class Board extends Updatable {
+  id: string;
+  title: string;
+  columns: Column[];
+
+  constructor({ id = uuid(), title = 'title', columns = [] }: BoardOption) {
     super();
 
     this.id = id;
@@ -22,27 +31,23 @@ class Board extends Updatable {
     return [...boards];
   }
 
-  static getById(id) {
+  static getById(id: string) {
     const board = boards.find(item => item.id === id);
     return board ?? null;
   }
 
-  static add(board) {
+  static add(board: Board) {
     boards.push(board);
     return board;
   }
 
-  static updateById(id, data) {
+  static updateById(id: string, data: UpdateData) {
     const board = Board.getById(id);
     return board ? board.update(data) : null;
   }
 
-  static deleteById(id) {
+  static deleteById(id: string) {
     const index = boards.findIndex(item => item.id === id);
     return (index !== -1) ? boards.splice(index, 1)[0] : null;
   }
 }
-
-module.exports = {
-  Board
-};

@@ -1,15 +1,16 @@
-const router = require('express').Router();
+import { Router, Request, Response } from "express";
+import * as boardsService from "./board.service";
 
-const boardsService = require('./board.service');
+const router = Router({ mergeParams: true });
 
 router
   .route('/')
-  .get(async (req, res) => {
+  .get(async (req: Request, res: Response) => {
     const boards = await boardsService.getAll();
 
     res.json(boards);
   })
-  .post(async (req, res) => {
+  .post(async (req: Request, res: Response) => {
     const board = await boardsService.create(req.body);
 
     res.status(201).json(board);
@@ -17,7 +18,7 @@ router
 
 router
   .route('/:boardId')
-  .get(async (req, res) => {
+  .get(async (req: Request, res: Response) => {
     const { boardId } = req.params;
     const board = await boardsService.getById(boardId);
 
@@ -28,7 +29,7 @@ router
 
     res.json(board);
   })
-  .put(async (req, res) => {
+  .put(async (req: Request, res: Response) => {
     const { params: { boardId }, body } = req;
     const board = await boardsService.update(boardId, body);
 
@@ -39,7 +40,7 @@ router
 
     res.json(board);
   })
-  .delete(async (req, res) => {
+  .delete(async (req: Request, res: Response) => {
     const { boardId } = req.params;
     const board = await boardsService.deleteById(boardId);
 
@@ -51,4 +52,4 @@ router
     res.json(board);
   })
 
-module.exports = router;
+export default router;

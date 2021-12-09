@@ -1,15 +1,16 @@
-const { Board } = require('./board.model');
-const { Task } = require('../task/task.model');
+import { Board, BoardOption } from "./board.model";
+import { Task } from "../task/task.model";
+import { UpdateData } from "../../common/entity/updatable";
 
-const getAll = async () => Board.getBoards();
+export const getAll = async () => Board.getBoards();
 
-const getById = async (id) => Board.getById(id);
+export const getById = async (id: string) => Board.getById(id);
 
-const create = async (data) => Board.add(new Board(data));
+export const create = async (data: BoardOption) => Board.add(new Board(data));
 
-const update = async (id, data) => Board.updateById(id, data);
+export const update = async (id: string, data: UpdateData) => Board.updateById(id, data);
 
-const deleteById = async (id) => {
+export const deleteById = async (id: string) => {
   Task.getTasks().forEach(task => {
     if (task.boardId === id) {
       Task.deleteById(task.id);
@@ -17,12 +18,4 @@ const deleteById = async (id) => {
   });
 
   return Board.deleteById(id);
-}
-
-module.exports = {
-  getAll,
-  getById,
-  create,
-  update,
-  deleteById
 };

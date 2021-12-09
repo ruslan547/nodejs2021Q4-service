@@ -1,8 +1,6 @@
 import { v4 as uuid } from 'uuid';
 import { Updatable, UpdateData } from '../../common/entity/updatable';
 
-const users: User[] = [];
-
 export interface UserOptions {
   id: string;
   name: string;
@@ -12,15 +10,20 @@ export interface UserOptions {
 
 export class User extends Updatable {
   id: string;
+
   name: string;
+
   login: string;
+
   password: string;
+
+  static users: User[] = [];
 
   constructor({
     id = uuid(),
     name = 'USER',
     login = 'user',
-    password = 'P@55w0rd'
+    password = 'P@55w0rd',
   }: UserOptions) {
     super();
 
@@ -36,16 +39,16 @@ export class User extends Updatable {
   }
 
   static getUsers() {
-    return [...users];
+    return [...User.users];
   }
 
   static getById(id: string) {
-    const user = users.find(item => item.id === id);
+    const user = User.users.find((item) => item.id === id);
     return user ?? null;
   }
 
   static add(user: User) {
-    users.push(user);
+    User.users.push(user);
     return user;
   }
 
@@ -55,7 +58,7 @@ export class User extends Updatable {
   }
 
   static deleteById(id: string) {
-    const index = users.findIndex(item => item.id === id);
-    return (index !== -1) ? users.splice(index, 1)[0] : null;
+    const index = User.users.findIndex((item) => item.id === id);
+    return (index !== -1) ? User.users.splice(index, 1)[0] : null;
   }
 }

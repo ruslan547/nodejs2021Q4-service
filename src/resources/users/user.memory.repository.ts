@@ -12,10 +12,10 @@ export const update = async (id: string, data: UpdateData) => User.updateById(id
 
 export const deleteById = async (id: string) => {
   Task.getTasks().forEach((task: Task) => {
-    if(task.userId === id) {
+    if (task.userId === id) {
       task.setUserId(null);
     }
   });
 
   return User.deleteById(id);
-}
+};

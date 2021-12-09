@@ -1,8 +1,10 @@
-import { v4 as uuid } from "uuid";
+import { v4 as uuid } from 'uuid';
 
 export class Column {
   id: string;
+
   title: string;
+
   order: number;
 
   constructor({ id = uuid(), title = 'title', order = 1 }) {

@@ -1,6 +1,6 @@
-import { UpdateData } from "../../common/entity/updatable";
-import * as boardsRepo from "./board.memory.repository";
-import { BoardOption } from "./board.model";
+import { UpdateData } from '../../common/entity/updatable';
+import * as boardsRepo from './board.memory.repository';
+import { BoardOption } from './board.model';
 
 export const getAll = () => boardsRepo.getAll();
 

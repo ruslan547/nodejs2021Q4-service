@@ -1,7 +1,6 @@
-import { Router, Request, Response } from "express";
-
-const usersService = require('./user.service');
-const { User } = require('./user.model');
+import { Router, Request, Response } from 'express';
+import { User } from './user.model';
+import * as usersService from './user.service';
 
 const router = Router();
 

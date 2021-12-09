@@ -1,5 +1,5 @@
-import { Router, Request, Response } from "express";
-import * as boardsService from "./board.service";
+import { Router, Request, Response } from 'express';
+import * as boardsService from './board.service';
 
 const router = Router({ mergeParams: true });
 
@@ -50,6 +50,6 @@ router
     }
 
     res.json(board);
-  })
+  });
 
 export default router;

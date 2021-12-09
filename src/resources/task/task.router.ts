@@ -1,5 +1,5 @@
-import { Router, Request, Response } from "express";
-import * as tasksService from "./task.service";
+import { Router, Request, Response } from 'express';
+import * as tasksService from './task.service';
 
 const router = Router({ mergeParams: true });
 
@@ -62,6 +62,6 @@ router
     }
 
     res.json(task);
-  })
+  });
 
 export default router;

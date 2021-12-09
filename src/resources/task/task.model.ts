@@ -1,7 +1,5 @@
-import { UpdateData, Updatable } from "../../common/entity/updatable";
-import { v4 as uuid } from "uuid";
-
-const tasks: Task[] = [];
+import { v4 as uuid } from 'uuid';
+import { UpdateData, Updatable } from '../../common/entity/updatable';
 
 export interface TaskOption {
   id: string;
@@ -15,12 +13,20 @@ export interface TaskOption {
 
 export class Task extends Updatable {
   id: string;
+
   title: string;
+
   order: string;
+
   description: string;
+
   userId: string | null;
+
   boardId: string;
+
   columnId: string;
+
+  static tasks: Task[] = [];
 
   constructor({
     id = uuid(),
@@ -29,7 +35,7 @@ export class Task extends Updatable {
     description = 'description',
     userId,
     boardId,
-    columnId
+    columnId,
   }: TaskOption) {
     super();
 
@@ -43,20 +49,20 @@ export class Task extends Updatable {
   }
 
   static getTasks() {
-    return [...tasks];
+    return [...Task.tasks];
   }
 
   static getTaskByBoardId(boardId: string) {
     return Task.getTasks()
-      .filter(task => task.boardId === boardId);
+      .filter((task) => task.boardId === boardId);
   }
 
   static getTaskById(id: string) {
-    return Task.getTasks().find(task => task.id === id);
+    return Task.getTasks().find((task) => task.id === id);
   }
 
   static add(task: Task) {
-    tasks.push(task);
+    Task.tasks.push(task);
     return task;
   }
 
@@ -65,13 +71,13 @@ export class Task extends Updatable {
   }
 
   static deleteById(id: string) {
-    const index = tasks.findIndex(item => item.id === id);
+    const index = Task.tasks.findIndex((item) => item.id === id);
 
     if (index === -1) {
       return null;
     }
 
-    return  tasks.splice(index, 1)[0];
+    return Task.tasks.splice(index, 1)[0];
   }
 
   setUserId(id: string | null) {

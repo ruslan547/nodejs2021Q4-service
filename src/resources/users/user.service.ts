@@ -1,7 +1,6 @@
-import { UpdateData } from "../../common/entity/updatable";
-import { UserOptions } from "./user.model";
-
-const usersRepo = require('./user.memory.repository');
+import { UpdateData } from '../../common/entity/updatable';
+import { UserOptions } from './user.model';
+import * as usersRepo from './user.memory.repository';
 
 export const getAll = () => usersRepo.getAll();
 

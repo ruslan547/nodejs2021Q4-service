@@ -1,8 +1,6 @@
-import { UpdateData, Updatable } from "../../common/entity/updatable";
-import { v4 as uuid } from "uuid";
-import { Column } from "./column.model";
-
-const boards: Board[] = [];
+import { v4 as uuid } from 'uuid';
+import { UpdateData, Updatable } from '../../common/entity/updatable';
+import { Column } from './column.model';
 
 export interface BoardOption {
   id: string;
@@ -12,8 +10,12 @@ export interface BoardOption {
 
 export class Board extends Updatable {
   id: string;
+
   title: string;
+
   columns: Column[];
+
+  static boards: Board[] = [];
 
   constructor({ id = uuid(), title = 'title', columns = [] }: BoardOption) {
     super();
@@ -28,16 +30,16 @@ export class Board extends Updatable {
   }
 
   static getBoards() {
-    return [...boards];
+    return [...Board.boards];
   }
 
   static getById(id: string) {
-    const board = boards.find(item => item.id === id);
+    const board = Board.boards.find((item) => item.id === id);
     return board ?? null;
   }
 
   static add(board: Board) {
-    boards.push(board);
+    Board.boards.push(board);
     return board;
   }
 
@@ -47,7 +49,7 @@ export class Board extends Updatable {
   }
 
   static deleteById(id: string) {
-    const index = boards.findIndex(item => item.id === id);
-    return (index !== -1) ? boards.splice(index, 1)[0] : null;
+    const index = Board.boards.findIndex((item) => item.id === id);
+    return (index !== -1) ? Board.boards.splice(index, 1)[0] : null;
   }
 }

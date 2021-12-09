@@ -1,6 +1,6 @@
-import { UpdateData } from "../../common/entity/updatable";
-import * as tasksRepo from "./task.memory.repository";
-import { TaskOption } from "./task.model";
+import { UpdateData } from '../../common/entity/updatable';
+import * as tasksRepo from './task.memory.repository';
+import { TaskOption } from './task.model';
 
 export const getAll = (boardId: string) => tasksRepo.getAll(boardId);
 

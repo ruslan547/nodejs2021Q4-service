@@ -5,6 +5,11 @@
     "@typescript-eslint"
   ],
   "settings": {
+    "noInlineConfig": true,
+    "node": {
+      "tryExtensions": [".js", ".ts", ".d.ts"],
+      "moduleDirectory": ["node_modules", "src/"]
+    },
     "import/resolver": {
       "node": {
         "extensions": [".js", ".jsx", ".ts", ".tsx", ".d.ts"],

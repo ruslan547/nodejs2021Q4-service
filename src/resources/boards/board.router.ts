@@ -5,7 +5,7 @@ const router = Router({ mergeParams: true });
 
 router
   .route('/')
-  .get(async (req: Request, res: Response) => {
+  .get(async (_: Request, res: Response) => {
     const boards = await boardsService.getAll();
 
     res.json(boards);
@@ -20,7 +20,7 @@ router
   .route('/:boardId')
   .get(async (req: Request, res: Response) => {
     const { boardId } = req.params;
-    const board = await boardsService.getById(boardId);
+    const board = await boardsService.getById(boardId as string);
 
     if (!board) {
       res.status(404).json('Not found');

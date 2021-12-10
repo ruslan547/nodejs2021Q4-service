@@ -1,9 +1,9 @@
-// {
-//   "editor.codeActionsOnSave": {
-//     "source.fixAll.eslint": true
-//   },
-//   "javascript.validate.enable": false,
-//   "[javascript]": {
-//     "editor.defaultFormatter": "esbenp.prettier-vscode"
-//   }
-// }
+{
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": false
+  },
+  "javascript.validate.enable": false,
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
+}

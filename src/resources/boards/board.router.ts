@@ -31,7 +31,7 @@ router
   })
   .put(async (req: Request, res: Response) => {
     const { params: { boardId }, body } = req;
-    const board = await boardsService.update(boardId, body);
+    const board = await boardsService.update(boardId as string, body);
 
     if (!board) {
       res.status(404).json('Not found');
@@ -42,7 +42,7 @@ router
   })
   .delete(async (req: Request, res: Response) => {
     const { boardId } = req.params;
-    const board = await boardsService.deleteById(boardId);
+    const board = await boardsService.deleteById(boardId as string);
 
     if (!board) {
       res.status(404).json('Not found');

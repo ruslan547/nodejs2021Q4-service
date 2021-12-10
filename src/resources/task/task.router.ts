@@ -7,7 +7,7 @@ router
   .route('/')
   .get(async (req: Request, res: Response) => {
     const { boardId } = req.params;
-    const tasks = await tasksService.getAll(boardId);
+    const tasks = await tasksService.getAll(boardId as string);
 
     if (!tasks.length) {
       res.status(404).json('Not found');
@@ -18,7 +18,7 @@ router
   })
   .post(async (req: Request, res: Response) => {
     const { body, params: { boardId } } = req;
-    const task = await tasksService.create(boardId, body);
+    const task = await tasksService.create(boardId as string, body);
 
     if (!task) {
       res.status(400).json('Bad request');
@@ -32,7 +32,7 @@ router
   .route('/:taskId')
   .get(async (req: Request, res: Response) => {
     const { taskId } = req.params;
-    const task = await tasksService.getById(taskId);
+    const task = await tasksService.getById(taskId as string);
 
     if (!task) {
       res.status(404).json('Not found');
@@ -43,7 +43,7 @@ router
   })
   .put(async (req: Request, res: Response) => {
     const { params: { taskId }, body } = req;
-    const task = await tasksService.update(taskId, body);
+    const task = await tasksService.update(taskId as string, body);
 
     if (!task) {
       res.status(404).json('Not found');
@@ -54,7 +54,7 @@ router
   })
   .delete(async (req: Request, res: Response) => {
     const { taskId } = req.params;
-    const task = await tasksService.deleteById(taskId);
+    const task = await tasksService.deleteById(taskId as string);
 
     if (!task) {
       res.status(404).json('Not found');

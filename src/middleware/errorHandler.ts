@@ -22,3 +22,8 @@ export const errorHandler = (error: StatusError, _: Request, res: Response, next
 export const clientErrorHandler = (_: Request, __: Response, next: NextFunction) => {
   next(new StatusError('Not found', 404));
 };
+
+export const unhandledErrorHandler = (err: Error) => {
+  console.log(err);
+  process.exit(1);
+};

@@ -1,7 +1,10 @@
 import { Request, Response, NextFunction } from 'express';
 import { StatusError } from '../common/errors/statusError';
+import { log } from './logger';
 
 export const errorHandler = (error: StatusError, _: Request, res: Response, next: NextFunction) => {
+  log(error);
+
   if (res.headersSent) {
     next(error);
     return;
@@ -24,6 +27,6 @@ export const clientErrorHandler = (_: Request, __: Response, next: NextFunction)
 };
 
 export const unhandledErrorHandler = (err: Error) => {
-  console.log(err);
+  log(err);
   process.exit(1);
 };

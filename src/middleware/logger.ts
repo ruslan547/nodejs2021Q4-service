@@ -7,13 +7,13 @@ const ERR_LOG = ['0', '2'];
 
 const loggingLevel = LOGGING_LEVEL ?? '2';
 
-export const log = (err: StatusError | null, req: Request, res: Response) => {
-  if (INFO_LOG.includes(loggingLevel)) {
+export const log = (err: Error | null, req?: Request, res?: Response) => {
+  if (INFO_LOG.includes(loggingLevel) && req && res) {
     console.log(req.method, req.baseUrl, res.statusCode, req.query, req.body);
   }
 
   if (ERR_LOG.includes(loggingLevel) && err) {
-    console.error(err?.name, err?.status, err?.message);
+    console.error(err?.name, err?.message, err?.stack);
   }
 };
 

@@ -13,9 +13,9 @@ import {
 } from './middleware';
 
 const app = express();
+app.use(logger);
 const swaggerDocument = YAML.load(path.join(__dirname, '../doc/api.yaml'));
 app.use(express.json());
-app.use(logger);
 
 app.use('/doc', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 

@@ -1,17 +1,12 @@
 import { Request, Response, NextFunction } from 'express';
-import { StatusError } from '../common/errors/statusError';
+import { ClientError } from '../common/errors/clientError';
 import { log } from './logger';
 
-export const errorHandler = (error: StatusError, _: Request, res: Response, next: NextFunction) => {
+export const errorHandler = (error: ClientError, _: Request, res: Response, next: NextFunction) => {
   log(error);
 
   if (res.headersSent) {
-    next(error);
     return;
-  }
-
-  if (!error.status) {
-    next(error);
   }
 
   res.status(error.status ?? 500);
@@ -23,7 +18,7 @@ export const errorHandler = (error: StatusError, _: Request, res: Response, next
 };
 
 export const clientErrorHandler = (_: Request, __: Response, next: NextFunction) => {
-  next(new StatusError('Not found', 404));
+  next(new ClientError('Not found', 404));
 };
 
 export const unhandledErrorHandler = (err: Error) => {

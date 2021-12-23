@@ -22,7 +22,7 @@ export const clientErrorHandler = (_: Request, __: Response, next: NextFunction)
   next(new ClientError('Not found', 404));
 };
 
-export const unhandledErrorHandler = (err: Error) => {
-  log(err);
+export const unhandledErrorHandler = async (err: Error) => {
+  await log(err);
   process.exit(1);
 };

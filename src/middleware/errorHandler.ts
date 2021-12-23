@@ -7,6 +7,7 @@ export const errorHandler = (error: ClientError, _: Request, res: Response, next
   log(error);
 
   if (res.headersSent) {
+    next(error);
     return;
   }
 

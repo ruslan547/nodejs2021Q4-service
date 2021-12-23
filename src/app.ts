@@ -36,5 +36,5 @@ app.use(errorHandler);
 
 process.on('uncaughtException', unhandledErrorHandler);
 process.on('unhandledRejection', unhandledErrorHandler);
-// throw new Error('OOPse..')
+
 export default app;

@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import { ClientError } from '../common/errors/clientError';
 import { log } from './logger';
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const errorHandler = (error: ClientError, _: Request, res: Response, next: NextFunction) => {
   log(error);
 

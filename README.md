@@ -1,5 +1,11 @@
 # RS School REST service
 
+## Task7/docker-basics
+
+```
+docker compose up
+```
+
 ## Prerequisites
 
 - Git - [Download & Install Git](https://git-scm.com/downloads).

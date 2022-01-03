@@ -2,11 +2,19 @@ version: '3'
 services:
   node:
     build: .
+    # restart: unless-stopped
     ports:
       - ${PORT}:${PORT}
+    volumes:
+      - logs:/app/logs
     depends_on:
       - postgres
   postgres:
     build: ./database
     ports:
       - ${POSTGRES_PORT}:${POSTGRES_PORT}
+    # volumes:
+    #   - .:/app/db
+
+volumes:
+  logs:

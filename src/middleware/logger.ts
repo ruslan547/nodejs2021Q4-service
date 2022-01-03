@@ -46,14 +46,14 @@ export const log = async (err: ClientError | null, req?: Request, res?: Response
     const logText = getLogText(req, res);
 
     stdout.write(logText, 'utf-8');
-    await writeFile('log.txt', logText);
+    await writeFile('logs/log.txt', logText);
   }
 
   if (ERR_LOG.includes(loggingLevel) && err) {
     const logText = getErrorLogText(err);
 
     stderr.write(logText, 'utf-8');
-    await writeFile('error-log.txt', logText);
+    await writeFile('logs/error-log.txt', logText);
   }
 };
 

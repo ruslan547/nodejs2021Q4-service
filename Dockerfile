@@ -10,6 +10,4 @@ COPY . .
 
 EXPOSE ${PORT}
 
-VOLUME [ "/app/logs" ]
-
 CMD [ "npm", "start" ]

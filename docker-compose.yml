@@ -9,6 +9,8 @@ services:
       - logs:/app/logs
       - ./src:/app/src
       - node_modules:/app/node_modules
+    networks:
+      - custom-network
     depends_on:
       - postgres
   postgres:
@@ -23,8 +25,14 @@ services:
       - ${POSTGRES_PORT}:${POSTGRES_PORT}
     volumes:
       - pgdata:${PGDATA}
+    networks:
+      - custom-network
 
 volumes:
   logs:
   pgdata:
   node_modules:
+
+networks:
+  custom-network:
+    driver: bridge

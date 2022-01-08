@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "target": "es5",
-    "lib": ["es5"],
+    "lib": ["es6"],
     "module": "commonjs",
     "rootDir": "./src",
     "moduleResolution": "node",
@@ -11,6 +11,8 @@
     "skipLibCheck": true,
     "strict": true,
     "noImplicitAny": true,
-    "watch": true
+    "watch": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
   }
 }

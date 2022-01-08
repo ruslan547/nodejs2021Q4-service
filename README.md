@@ -1,5 +1,17 @@
 # RS School REST service
 
+## Task7/docker-basics
+
+```
+git clone https://github.com/ruslan547/nodejs2021Q4-service.git
+
+git checkout task7/docker-basics
+
+docker compose up --build
+```
+
+go to http://localhost:4000
+
 ## Prerequisites
 
 - Git - [Download & Install Git](https://git-scm.com/downloads).

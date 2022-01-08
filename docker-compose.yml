@@ -6,9 +6,9 @@ services:
     ports:
       - ${PORT}:${PORT}
     volumes:
-      - logs:${WORKDIR}/logs
-      - ./:${WORKDIR}
-      - node_modules:${WORKDIR}/node_modules
+      - logs:/app/logs
+      - ./src:/app/src
+      - node_modules:/app/node_modules
     depends_on:
       - postgres
   postgres:

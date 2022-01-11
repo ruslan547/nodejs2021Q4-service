@@ -1,4 +1,7 @@
+import { createConnection } from 'typeorm';
 import { PORT } from './common/config';
 import app from './app';
 
-app.listen(PORT, () => console.log(`App is running on http://localhost:${PORT}`));
+createConnection().then(() => {
+  app.listen(PORT, () => console.log(`App is running on http://localhost:${PORT}`));
+}).catch((error: Error) => console.log(error));

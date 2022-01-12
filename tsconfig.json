@@ -17,6 +17,7 @@
     "watch": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "sourceMap": true
+    "sourceMap": true,
+    "strictPropertyInitialization": false
   }
 }

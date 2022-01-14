@@ -1,11 +1,11 @@
-import { createConnection, Connection } from 'typeorm';
+import { createConnection, Connection, EntityTarget, Repository } from 'typeorm';
 import { POSTGRES_PORT, POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_DB } from '../common/dbConfig';
 import { User } from '../resources/users/user.model';
 
-export class DriverManager {
-  static conn: Connection | null = null;
+class DriverManager {
+  private conn: Connection | null = null;
 
-  static connect = async (cb: () => void) => {
+  connect = async (cb: () => void) => {
     try {
       const connection = await createConnection({
         type: 'postgres',
@@ -25,10 +25,14 @@ export class DriverManager {
         this.conn = connection;
         cb();
       }
-
-      this.conn = connection;
     } catch (err) {
       console.log(err);
     }
   };
+
+  getRepository = <T>(
+    target: EntityTarget<T>,
+  ): Repository<T> | undefined => this.conn?.getRepository(target);
 }
+
+export const driverManager = new DriverManager();

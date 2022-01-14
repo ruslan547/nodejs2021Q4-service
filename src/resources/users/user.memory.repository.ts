@@ -1,26 +1,31 @@
+import { FindCondition } from 'typeorm';
 import { UpdateData } from '../../common/entity/updatable';
 import { User, UserOptions } from './user.model';
-import { Task } from '../task/task.model';
+import { driverManager } from '../../utils/dbUtils';
 
 /**
  * Returns all users
  * @returns array of users, User[]
  */
-export const getAll = async () => User.getUsers();
+export const getAll = async () => driverManager.getRepository(User)?.find();
 
 /**
  * Returns User or null
  * @param id id of user
  * @returns User or null
  */
-export const getById = async (id: string) => User.getById(id);
+
+export const getById = async (
+  id: FindCondition<number> | undefined,
+) => driverManager.getRepository(User)?.findOne({ id });
 
 /**
  * Returns User
  * @param data user's data
  * @returns User
  */
-export const create = async (data: UserOptions) => User.add(new User(data));
+export const create = async (data: UserOptions) => driverManager
+  .getRepository(User)?.save(new User(data));
 
 /**
  * Returns User or null
@@ -28,19 +33,35 @@ export const create = async (data: UserOptions) => User.add(new User(data));
  * @param data user's update data
  * @returns User or null
  */
-export const update = async (id: string, data: UpdateData) => User.updateById(id, data);
+export const update = async (id: FindCondition<number> | undefined, data: UpdateData) => {
+  const foundUser = await driverManager
+    .getRepository(User)?.findOne({ id });
+
+  if (foundUser) {
+    foundUser.update(data);
+
+    return driverManager
+      .getRepository(User)?.save(foundUser);
+  }
+
+  return foundUser;
+};
 
 /**
  * Returns User or null
  * @param id user's id
  * @returns User or null
  */
-export const deleteById = async (id: string) => {
-  Task.getTasks().forEach((task: Task) => {
-    if (task.userId === id) {
-      task.setUserId(null);
-    }
-  });
+export const deleteById = async (id: FindCondition<number> | undefined) => {
+  const foundUser = await driverManager
+    .getRepository(User)?.findOne({ id });
 
-  return User.deleteById(id);
+  if (foundUser) {
+    // TODO remove tasks of this user
+
+    return driverManager
+      .getRepository(User)?.remove(foundUser);
+  }
+
+  return foundUser;
 };

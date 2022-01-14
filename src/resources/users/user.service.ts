@@ -1,3 +1,4 @@
+import { FindCondition } from 'typeorm';
 import { UpdateData } from '../../common/entity/updatable';
 import { UserOptions } from './user.model';
 import * as usersRepo from './user.memory.repository';
@@ -13,7 +14,7 @@ export const getAll = () => usersRepo.getAll();
  * @param id id of user
  * @returns User or null
  */
-export const getUser = (id: string) => usersRepo.getById(id);
+export const getUser = (id: FindCondition<number> | undefined) => usersRepo.getById(id);
 
 /**
  * Returns User
@@ -28,11 +29,14 @@ export const createUser = (data: UserOptions) => usersRepo.create(data);
  * @param data user's update data
  * @returns User or null
  */
-export const updateUser = (id: string, data: UpdateData) => usersRepo.update(id, data);
+export const updateUser = (
+  id: FindCondition<number> | undefined,
+  data: UpdateData,
+) => usersRepo.update(id, data);
 
 /**
  * Returns User or null
  * @param id user's id
  * @returns User or null
  */
-export const deleteUser = (id: string) => usersRepo.deleteById(id);
+export const deleteUser = (id: FindCondition<number> | undefined) => usersRepo.deleteById(id);

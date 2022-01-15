@@ -50,7 +50,7 @@ export const create = async (data: BoardOption) => {
   }
 
   board.title = data.title ?? 'title';
-  board.columns = columns;
+  board.columns = columns.reverse();
 
   return driverManager.getRepository(Board)?.save(board);
 };

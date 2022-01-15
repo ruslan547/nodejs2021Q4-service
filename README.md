@@ -1,5 +1,13 @@
 # RS School REST service
 
+## Task8/postgres and typeorm
+
+- need to put password in .env file
+
+    ```POSTGRES_PASSWORD=postgres```
+
+- ```docker compose up --build```
+
 ## Task7/docker-basics
 
 ```

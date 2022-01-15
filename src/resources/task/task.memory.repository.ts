@@ -1,7 +1,6 @@
 import { FindCondition } from 'typeorm';
 import { UpdateData } from '../../common/entity/updatable';
 import { driverManager } from '../../utils/dbUtils';
-import { BoardColumn } from '../boards/column.model';
 import { Task, TaskOption } from './task.model';
 
 // TODO update users
@@ -31,13 +30,12 @@ export const create = async (
   data: TaskOption,
 ) => {
   const task = new Task();
-  const column = await driverManager.getRepository(BoardColumn)?.findOne({ boardId });
 
   task.boardId = boardId as string;
-  task.title = data.title;
-  task.order = data.order;
-  task.description = data.description;
-  task.columnId = column?.id as string;
+  task.title = data.title ?? 'title';
+  task.order = +data.order ?? 1;
+  task.description = data.description ?? 'description';
+  task.columnId = data.columnId ?? null;
   task.userId = data.userId;
 
   return driverManager.getRepository(Task)?.save(task);

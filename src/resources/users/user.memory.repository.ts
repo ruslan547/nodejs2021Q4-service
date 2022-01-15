@@ -68,8 +68,7 @@ export const deleteById = async (id: FindCondition<string> | undefined) => {
   if (foundUser) {
     const tasks = await driverManager.getRepository(Task)?.find({ userId: id });
 
-    if (tasks) {
-      await driverManager.getRepository(Task)?.remove(tasks);
+    if (tasks?.length) {
       tasks.forEach(async (item) => {
         // eslint-disable-next-line no-param-reassign
         item.userId = null;

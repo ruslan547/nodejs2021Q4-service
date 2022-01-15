@@ -4,7 +4,7 @@ import { Updatable } from '../../common/entity/updatable';
 export interface TaskOption {
   id: string;
   title: string;
-  order: string;
+  order: number;
   description: string
   userId: string | null;
   boardId: string;
@@ -19,8 +19,8 @@ export class Task extends Updatable {
   @Column('varchar', { length: 50 })
   title: string;
 
-  @Column('varchar', { length: 50 })
-  order: string;
+  @Column('int', { nullable: true })
+  order: number;
 
   @Column('varchar', { length: 250 })
   description: string;
@@ -28,9 +28,9 @@ export class Task extends Updatable {
   @Column('uuid', { nullable: true })
   userId: string | null;
 
-  @Column('uuid')
+  @Column('uuid', { nullable: true })
   boardId: string;
 
-  @Column('uuid')
+  @Column('uuid', { nullable: true })
   columnId: string;
 }

@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 import { Updatable } from '../../common/entity/updatable';
 import { BoardColumn } from './column.model';
 
@@ -15,4 +15,7 @@ export class Board extends Updatable {
 
   @Column('varchar', { length: 250 })
   title: string;
+
+  @OneToMany(() => BoardColumn, (column) => column.boardId)
+  columns: BoardColumn[]
 }

@@ -9,7 +9,8 @@ import { Task } from '../task/task.model';
  * Returns all boards
  * @returns array of boards, Board[]
  */
-export const getAll = async () => driverManager.getRepository(Board)?.find();
+export const getAll = async () => driverManager
+  .getRepository(Board)?.find({ relations: ['columns'] });
 
 /**
  * Returns Board or null
@@ -18,7 +19,7 @@ export const getAll = async () => driverManager.getRepository(Board)?.find();
  */
 export const getById = async (
   id: FindCondition<string> | undefined,
-) => driverManager.getRepository(Board)?.findOne({ id });
+) => driverManager.getRepository(Board)?.findOne({ id }, { relations: ['columns'] });
 
 /**
  * Returns Board
@@ -28,20 +29,30 @@ export const getById = async (
 export const create = async (data: BoardOption) => {
   const manager = driverManager.getManager();
   const board = new Board();
-  const column = new BoardColumn();
+  const columns: BoardColumn[] = [];
 
-  board.title = data.title ?? 'title';
-  column.title = column.title ?? 'column1';
-  column.order = 1;
+  if (data.columns?.length) {
+    data.columns.forEach(async (item) => {
+      const column = new BoardColumn();
 
-  const savedBoard = await manager?.save(board);
+      column.title = item.title ?? 'column1';
+      column.order = item.order ?? 1;
+      await manager?.save(column);
+      columns.push(column);
+    });
+  } else {
+    const column = new BoardColumn();
 
-  if (savedBoard) {
-    column.boardId = savedBoard.id;
+    column.title = 'column1';
+    column.order = 1;
     await manager?.save(column);
+    columns.push(column);
   }
 
-  return savedBoard;
+  board.title = data.title ?? 'title';
+  board.columns = columns;
+
+  return driverManager.getRepository(Board)?.save(board);
 };
 
 /**

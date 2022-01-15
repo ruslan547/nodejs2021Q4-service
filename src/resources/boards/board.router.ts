@@ -22,7 +22,7 @@ router
   .get(async (req: Request, res: Response) => {
     const { boardId } = req.params;
     const board = await boardsService
-      .getById(boardId as unknown as FindCondition<number> | undefined);
+      .getById(boardId as unknown as FindCondition<string> | undefined);
 
     if (!board) {
       res.status(404).json('Not found');
@@ -34,7 +34,7 @@ router
   .put(async (req: Request, res: Response) => {
     const { params: { boardId }, body } = req;
     const board = await boardsService
-      .update(boardId as unknown as FindCondition<number> | undefined, body);
+      .update(boardId as unknown as FindCondition<string> | undefined, body);
 
     if (!board) {
       res.status(404).json('Not found');
@@ -46,7 +46,7 @@ router
   .delete(async (req: Request, res: Response) => {
     const { boardId } = req.params;
     const board = await boardsService
-      .deleteById(boardId as unknown as FindCondition<number> | undefined);
+      .deleteById(boardId as unknown as FindCondition<string> | undefined);
 
     if (!board) {
       res.status(404).json('Not found');

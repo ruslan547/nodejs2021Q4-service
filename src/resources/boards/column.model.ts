@@ -1,17 +1,16 @@
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
-import { Board } from './board.model';
 
 @Entity()
 export class BoardColumn {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
-  @Column('varchar', { length: 250 })
+  @Column('varchar', { length: 50, nullable: true })
   title: string;
 
   @Column('int')
   order: number;
 
-  @Column('int')
-  boardId: number;
+  @Column('uuid')
+  boardId: string;
 }

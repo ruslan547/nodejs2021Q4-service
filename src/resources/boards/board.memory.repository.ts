@@ -3,6 +3,7 @@ import { Board, BoardOption } from './board.model';
 import { UpdateData } from '../../common/entity/updatable';
 import { driverManager } from '../../utils/dbUtils';
 import { BoardColumn } from './column.model';
+import { Task } from '../task/task.model';
 
 /**
  * Returns all boards
@@ -16,7 +17,7 @@ export const getAll = async () => driverManager.getRepository(Board)?.find();
  * @returns Board or null
  */
 export const getById = async (
-  id: FindCondition<number> | undefined,
+  id: FindCondition<string> | undefined,
 ) => driverManager.getRepository(Board)?.findOne({ id });
 
 /**
@@ -49,7 +50,7 @@ export const create = async (data: BoardOption) => {
  * @param data board's update data
  * @returns Board or null
  */
-export const update = async (id: FindCondition<number> | undefined, data: UpdateData) => {
+export const update = async (id: FindCondition<string> | undefined, data: UpdateData) => {
   const foundBoard = await driverManager.getRepository(Board)?.findOne({ id });
 
   if (foundBoard) {
@@ -66,19 +67,24 @@ export const update = async (id: FindCondition<number> | undefined, data: Update
  * @param id board's id
  * @returns Board or null
  */
-export const deleteById = async (id: FindCondition<number> | undefined) => {
-  // TODO delete all tasks
+export const deleteById = async (id: FindCondition<string> | undefined) => {
+  const tasks = await driverManager.getRepository(Task)?.find({ boardId: id });
 
-  // Task.getTasks().forEach((task) => {
-  //   if (task.boardId === id) {
-  //     Task.deleteById(task.id);
-  //   }
-  // });
+  if (tasks) {
+    await driverManager.getRepository(Task)?.remove(tasks);
+  }
 
   const foundBoard = await driverManager
     .getRepository(Board)?.findOne({ id });
 
   if (foundBoard) {
+    const columns = await driverManager
+      .getRepository(BoardColumn)?.find({ boardId: foundBoard.id });
+
+    if (columns) {
+      await driverManager.getRepository(BoardColumn)?.remove(columns);
+    }
+
     return driverManager
       .getRepository(Board)?.remove(foundBoard);
   }

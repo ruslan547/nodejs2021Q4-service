@@ -2,6 +2,7 @@ import { createConnection, Connection, EntityTarget, Repository, EntityManager }
 import { POSTGRES_PORT, POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_DB } from '../common/dbConfig';
 import { Board } from '../resources/boards/board.model';
 import { BoardColumn } from '../resources/boards/column.model';
+import { Task } from '../resources/task/task.model';
 import { User } from '../resources/users/user.model';
 
 class DriverManager {
@@ -20,6 +21,7 @@ class DriverManager {
           User,
           Board,
           BoardColumn,
+          Task,
         ],
         synchronize: true,
         logging: false,

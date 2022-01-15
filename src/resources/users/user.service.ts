@@ -14,7 +14,7 @@ export const getAll = () => usersRepo.getAll();
  * @param id id of user
  * @returns User or null
  */
-export const getUser = (id: FindCondition<number> | undefined) => usersRepo.getById(id);
+export const getUser = (id: FindCondition<string> | undefined) => usersRepo.getById(id);
 
 /**
  * Returns User
@@ -30,7 +30,7 @@ export const createUser = (data: UserOptions) => usersRepo.create(data);
  * @returns User or null
  */
 export const updateUser = (
-  id: FindCondition<number> | undefined,
+  id: FindCondition<string> | undefined,
   data: UpdateData,
 ) => usersRepo.update(id, data);
 
@@ -39,4 +39,4 @@ export const updateUser = (
  * @param id user's id
  * @returns User or null
  */
-export const deleteUser = (id: FindCondition<number> | undefined) => usersRepo.deleteById(id);
+export const deleteUser = (id: FindCondition<string> | undefined) => usersRepo.deleteById(id);

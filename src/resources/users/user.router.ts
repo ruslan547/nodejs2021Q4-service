@@ -28,7 +28,7 @@ router
   .get(async (req: Request, res: Response) => {
     const { userId } = req.params;
     const user = await usersService
-      .getUser(userId as unknown as FindCondition<number> | undefined);
+      .getUser(userId as unknown as FindCondition<string> | undefined);
 
     if (!user) {
       res.status(404).json('Not found');
@@ -40,7 +40,7 @@ router
   .put(async (req: Request, res: Response) => {
     const { params: { userId }, body } = req;
     const user = await usersService
-      .updateUser(userId as unknown as FindCondition<number> | undefined, body);
+      .updateUser(userId as unknown as FindCondition<string> | undefined, body);
 
     if (!user) {
       res.status(404).json('Not found');
@@ -52,7 +52,7 @@ router
   .delete(async (req: Request, res: Response) => {
     const { userId } = req.params;
     const user = await usersService
-      .deleteUser(userId as unknown as FindCondition<number> | undefined);
+      .deleteUser(userId as unknown as FindCondition<string> | undefined);
 
     if (!user) {
       res.status(404).json('Not found');

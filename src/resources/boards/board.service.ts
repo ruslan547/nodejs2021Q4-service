@@ -14,7 +14,7 @@ export const getAll = () => boardsRepo.getAll();
  * @param id id of board
  * @returns Board or null
  */
-export const getById = (id: FindCondition<number> | undefined) => boardsRepo.getById(id);
+export const getById = (id: FindCondition<string> | undefined) => boardsRepo.getById(id);
 
 /**
  * Returns Board
@@ -29,7 +29,7 @@ export const create = (data: BoardOption) => boardsRepo.create(data);
  * @param data board's update data
  * @returns Board or null
  */
-export const update = (id: FindCondition<number> | undefined, data: UpdateData) => boardsRepo
+export const update = (id: FindCondition<string> | undefined, data: UpdateData) => boardsRepo
   .update(id, data);
 
 /**
@@ -37,4 +37,4 @@ export const update = (id: FindCondition<number> | undefined, data: UpdateData) 
  * @param id board's id
  * @returns Board or null
  */
-export const deleteById = (id: FindCondition<number> | undefined) => boardsRepo.deleteById(id);
+export const deleteById = (id: FindCondition<string> | undefined) => boardsRepo.deleteById(id);

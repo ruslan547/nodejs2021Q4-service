@@ -1,4 +1,5 @@
 import { Router, Request, Response } from 'express';
+import { FindCondition } from 'typeorm';
 import * as boardsService from './board.service';
 
 const router = Router({ mergeParams: true });
@@ -6,7 +7,7 @@ const router = Router({ mergeParams: true });
 router
   .route('/')
   .get(async (_: Request, res: Response) => {
-    const boards = await boardsService.getAll();
+    const boards = await boardsService.getAll() ?? [];
 
     res.json(boards);
   })
@@ -20,7 +21,8 @@ router
   .route('/:boardId')
   .get(async (req: Request, res: Response) => {
     const { boardId } = req.params;
-    const board = await boardsService.getById(boardId as string);
+    const board = await boardsService
+      .getById(boardId as unknown as FindCondition<number> | undefined);
 
     if (!board) {
       res.status(404).json('Not found');
@@ -31,7 +33,8 @@ router
   })
   .put(async (req: Request, res: Response) => {
     const { params: { boardId }, body } = req;
-    const board = await boardsService.update(boardId as string, body);
+    const board = await boardsService
+      .update(boardId as unknown as FindCondition<number> | undefined, body);
 
     if (!board) {
       res.status(404).json('Not found');
@@ -42,7 +45,8 @@ router
   })
   .delete(async (req: Request, res: Response) => {
     const { boardId } = req.params;
-    const board = await boardsService.deleteById(boardId as string);
+    const board = await boardsService
+      .deleteById(boardId as unknown as FindCondition<number> | undefined);
 
     if (!board) {
       res.status(404).json('Not found');

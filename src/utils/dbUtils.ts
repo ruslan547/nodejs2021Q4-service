@@ -1,5 +1,7 @@
-import { createConnection, Connection, EntityTarget, Repository } from 'typeorm';
+import { createConnection, Connection, EntityTarget, Repository, EntityManager } from 'typeorm';
 import { POSTGRES_PORT, POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_DB } from '../common/dbConfig';
+import { Board } from '../resources/boards/board.model';
+import { BoardColumn } from '../resources/boards/column.model';
 import { User } from '../resources/users/user.model';
 
 class DriverManager {
@@ -16,6 +18,8 @@ class DriverManager {
         database: POSTGRES_DB,
         entities: [
           User,
+          Board,
+          BoardColumn,
         ],
         synchronize: true,
         logging: false,
@@ -33,6 +37,8 @@ class DriverManager {
   getRepository = <T>(
     target: EntityTarget<T>,
   ): Repository<T> | undefined => this.conn?.getRepository(target);
+
+  getManager = (): EntityManager | undefined => this.conn?.manager;
 }
 
 export const driverManager = new DriverManager();

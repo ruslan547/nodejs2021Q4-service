@@ -1,6 +1,6 @@
 import { FindCondition } from 'typeorm';
-import { UpdateData } from '../../common/entity/updatable';
 import { User, UserOptions } from './user.model';
+import { UpdateData } from '../../common/entity/updatable';
 import { driverManager } from '../../utils/dbUtils';
 
 /**

@@ -25,10 +25,16 @@ class DriverManager {
         ],
         synchronize: true,
         logging: false,
+        migrations: ['src/migration/*.ts'],
+        cli: {
+          migrationsDir: 'src/migration',
+        },
       });
 
       if (connection.isConnected) {
         this.conn = connection;
+        await connection.runMigrations();
+
         cb();
       }
     } catch (err) {

@@ -6,7 +6,7 @@ export class BoardColumn {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column('varchar', { length: 50, nullable: true })
+  @Column('varchar', { length: 50 })
   title: string;
 
   @Column('int')

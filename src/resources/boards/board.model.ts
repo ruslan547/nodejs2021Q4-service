@@ -13,7 +13,7 @@ export class Board extends Updatable {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column('varchar', { length: 250 })
+  @Column('varchar', { length: 50 })
   title: string;
 
   @OneToMany(() => BoardColumn, (column) => column.boardId)

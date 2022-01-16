@@ -1,5 +1,25 @@
 # RS School REST service
 
+## Task8/postgres and typeorm
+
+- need to put password in .env file
+
+    ```POSTGRES_PASSWORD=postgres```
+
+- ```docker compose up --build```
+
+## Task7/docker-basics
+
+```
+git clone https://github.com/ruslan547/nodejs2021Q4-service.git
+
+git checkout task7/docker-basics
+
+docker compose up --build
+```
+
+go to http://localhost:4000
+
 ## Prerequisites
 
 - Git - [Download & Install Git](https://git-scm.com/downloads).

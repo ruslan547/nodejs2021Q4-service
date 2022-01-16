@@ -1,0 +1,38 @@
+version: '3'
+services:
+  node:
+    build: .
+    restart: unless-stopped
+    ports:
+      - ${PORT}:${PORT}
+    volumes:
+      - logs:/app/logs
+      - ./src:/app/src
+    networks:
+      - custom-network
+    depends_on:
+      - postgres
+  postgres:
+    build: ./database
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_HOST_AUTH_METHOD: ${POSTGRES_HOST_AUTH_METHOD}
+      PGDATA: ${PGDATA}
+    ports:
+      - ${POSTGRES_PORT}:${POSTGRES_PORT}
+    volumes:
+      - pgdata:${PGDATA}
+    networks:
+      - custom-network
+
+volumes:
+  logs:
+  pgdata:
+  node_modules:
+
+networks:
+  custom-network:
+    driver: bridge

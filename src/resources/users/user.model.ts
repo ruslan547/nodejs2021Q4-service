@@ -19,7 +19,7 @@ export class User extends Updatable {
   @Column('varchar', { length: 50, nullable: true })
   login: string;
 
-  @Column('varchar', { length: 50, nullable: true })
+  @Column('varchar', { length: 250, nullable: true })
   password: string;
 
   static toResponse(user: User) {

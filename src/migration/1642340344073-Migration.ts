@@ -27,7 +27,7 @@ export class Migration1642340344073 implements MigrationInterface {
         {
           name: 'password',
           type: 'varchar',
-          length: '50',
+          length: '250',
           isNullable: true,
         },
       ],

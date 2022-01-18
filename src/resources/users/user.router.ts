@@ -13,6 +13,15 @@ router
     res.json(users.map(User.toResponse));
   })
   .post(async (req: Request, res: Response) => {
+    const { login, password, name } = req.body;
+    if (!login || !password || !name) {
+      res.status(400).json({
+        message: 'Bad request',
+        description: 'name, login, password are required field',
+      });
+      return;
+    }
+
     const user = await usersService.createUser(req.body);
 
     if (user) {

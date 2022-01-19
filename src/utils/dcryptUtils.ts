@@ -1,16 +1,22 @@
 import bcrypt from 'bcrypt';
 import util from 'util';
-import { PRIVATE_KEY } from '../common/config';
+import { SALT_ROUNDS } from '../common/config';
 
 const asyncHash = util.promisify(bcrypt.hash);
 const asyncCompare = util.promisify(bcrypt.compare);
 
 export const hash = async (data: string) => {
-  if (!PRIVATE_KEY) {
-    throw new Error('PRIVATE_KEY is miss');
+  if (!SALT_ROUNDS) {
+    throw new Error('SALT_ROUNDS is miss');
   }
 
-  const result = await asyncHash(data, +PRIVATE_KEY);
+  const saltRounds = +SALT_ROUNDS;
+
+  if (!Number.isInteger(saltRounds)) {
+    throw new Error('SALT_ROUNDS is not integer');
+  }
+
+  const result = await asyncHash(data, saltRounds);
 
   return result;
 };

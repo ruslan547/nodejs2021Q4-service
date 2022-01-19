@@ -13,7 +13,7 @@ export const login = async (data: LoginData) => {
   const password = data.password.toString();
   const users = await getAll();
   const user = users?.find((item) => item.login === data.login);
-  const isLogin = user && compare(password, user.password);
+  const isLogin = user && await compare(password, user.password);
 
   if (!PRIVATE_KEY) {
     throw new Error('PRIVATE_KEY is miss');
@@ -22,7 +22,7 @@ export const login = async (data: LoginData) => {
   if (isLogin) {
     return {
       ...User.toResponse(user),
-      token: jwt.sign({ id: user.id }, PRIVATE_KEY),
+      token: jwt.sign({ userId: user.id, login: user.login }, PRIVATE_KEY),
     };
   }
 

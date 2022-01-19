@@ -21,6 +21,14 @@ router
 
     const loginData = await loginService.login(req.body);
 
+    if (!loginData) {
+      res.status(400).json({
+        message: 'Bad request',
+        description: 'invalid login or password',
+      });
+      return;
+    }
+
     res.status(200).json(loginData);
   });
 

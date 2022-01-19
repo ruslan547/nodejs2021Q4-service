@@ -1,12 +1,8 @@
 import { FindCondition } from 'typeorm';
-import bcrypt from 'bcrypt';
-import util from 'util';
 import { User, UserOptions } from './user.model';
 import { UpdateData } from '../../common/entity/updatable';
 import { driverManager } from '../../utils/dbUtils';
 import { Task } from '../task/task.model';
-
-const hash = util.promisify(bcrypt.hash);
 
 /**
  * Returns all users
@@ -31,11 +27,10 @@ export const getById = async (
  */
 export const create = async (data: UserOptions) => {
   const user = new User();
-  const password = await hash(data.password, 10);
 
   user.name = data.name;
   user.login = data.login;
-  user.password = password;
+  user.password = data.password;
 
   return driverManager
     .getRepository(User)?.save(user);

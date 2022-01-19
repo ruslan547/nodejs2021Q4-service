@@ -24,12 +24,15 @@ router
 
     const user = await usersService.createUser(req.body);
 
-    if (user) {
-      res.status(201).json(User.toResponse(user));
+    if (!user) {
+      res.status(400).json({
+        message: 'Bad request',
+        description: `user ${login} was created already`,
+      });
       return;
     }
 
-    res.status(500).json('Error on server');
+    res.status(201).json(User.toResponse(user));
   });
 
 router

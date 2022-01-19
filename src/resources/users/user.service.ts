@@ -2,6 +2,7 @@ import { FindCondition } from 'typeorm';
 import { UpdateData } from '../../common/entity/updatable';
 import { UserOptions } from './user.model';
 import * as usersRepo from './user.memory.repository';
+import { hash } from '../../utils/dcryptUtils';
 
 /**
  * Returns all users
@@ -21,7 +22,17 @@ export const getUser = (id: FindCondition<string> | undefined) => usersRepo.getB
  * @param data user's data
  * @returns User
  */
-export const createUser = (data: UserOptions) => usersRepo.create(data);
+export const createUser = async (data: UserOptions) => {
+  const password = await hash(data.password.toString());
+  const users = await usersRepo.getAll();
+  const isCreated = users?.find((item) => item.login === data.login);
+
+  if (isCreated) {
+    return null;
+  }
+
+  return usersRepo.create({ ...data, password });
+};
 
 /**
  * Returns User or null

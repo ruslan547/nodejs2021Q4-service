@@ -15,16 +15,16 @@ export const login = async (data: LoginData) => {
   const user = users?.find((item) => item.login === data.login);
   const isLogin = user && await compare(password, user.password);
 
+  if (!isLogin) {
+    return null;
+  }
+
   if (!PRIVATE_KEY) {
     throw new Error('PRIVATE_KEY is miss');
   }
 
-  if (isLogin) {
-    return {
-      ...User.toResponse(user),
-      token: jwt.sign({ userId: user.id, login: user.login }, PRIVATE_KEY),
-    };
-  }
-
-  return null;
+  return {
+    ...User.toResponse(user),
+    token: jwt.sign({ userId: user.id, login: user.login }, PRIVATE_KEY),
+  };
 };

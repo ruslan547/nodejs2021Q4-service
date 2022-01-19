@@ -29,7 +29,9 @@ router
       return;
     }
 
-    res.status(200).json(loginData);
+    res.status(200)
+      .set('Authorization', `Bearer ${loginData.token}`)
+      .json(loginData);
   });
 
 export default router;

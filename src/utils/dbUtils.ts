@@ -4,6 +4,30 @@ import { Board } from '../resources/boards/board.model';
 import { BoardColumn } from '../resources/boards/column.model';
 import { Task } from '../resources/task/task.model';
 import { User } from '../resources/users/user.model';
+import { hash } from './dcryptUtils';
+
+const ADMIN = 'admin';
+
+const addAdmin = async (connection: Connection) => {
+  const login = ADMIN;
+  const user = await connection.getRepository(User)
+    .createQueryBuilder('user')
+    .where('user.login = :login', { login })
+    .getOne();
+
+  if (!user) {
+    const password = await hash(ADMIN);
+
+    await connection
+      .createQueryBuilder()
+      .insert()
+      .into(User)
+      .values([
+        { name: ADMIN, login, password },
+      ])
+      .execute();
+  }
+};
 
 class DriverManager {
   private conn: Connection | null = null;
@@ -34,6 +58,7 @@ class DriverManager {
       if (connection.isConnected) {
         this.conn = connection;
         await connection.runMigrations();
+        await addAdmin(connection);
 
         cb();
       }

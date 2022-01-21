@@ -1,19 +1,22 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
-import util from 'util';
+import { PRIVATE_KEY } from '../common/config';
 import { ClientError } from '../common/errors/clientError';
-
-const verify = util.promisify(jwt.verify);
 
 export const auth = async (req: Request, res: Response, next: NextFunction) => {
   if (req.headers.authorization) {
-    try {
-      await verify(req.headers.authorization.split(' ')[1]);
-      next();
-    } catch {
-      next(new ClientError('Unauthorized', 401));
+    if (!PRIVATE_KEY) {
+      throw new Error('PRIVATE_KEY is miss');
     }
-  }
 
-  next(new ClientError('Unauthorized', 401));
+    jwt.verify(req.headers.authorization.split(' ')[1], PRIVATE_KEY, (err) => {
+      if (err) {
+        next(new ClientError('Unauthorized', 401));
+      }
+
+      next();
+    });
+  } else {
+    next(new ClientError('Unauthorized', 401));
+  }
 };

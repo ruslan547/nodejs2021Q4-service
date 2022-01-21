@@ -5,9 +5,6 @@ const router = Router({ mergeParams: true });
 
 router
   .route('/')
-  .get(async (req: Request, res: Response) => {
-    res.status(200).json('login');
-  })
   .post(async (req: Request, res: Response) => {
     const { login, password } = req.body;
 
@@ -30,7 +27,6 @@ router
     }
 
     res.status(200)
-      .set('Authorization', `Bearer ${loginData.token}`)
       .json(loginData);
   });
 

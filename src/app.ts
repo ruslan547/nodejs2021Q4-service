@@ -12,6 +12,7 @@ import {
   errorHandler,
   unhandledErrorHandler,
   logger,
+  auth,
 } from './middleware';
 
 const app = express();
@@ -30,6 +31,7 @@ app.use('/', (req, res, next) => {
 });
 
 app.use('/login', loginRouter);
+app.use(auth);
 app.use('/users', userRouter);
 app.use('/boards', boardRouter);
 app.use('/boards/:boardId/tasks', taskRouter);

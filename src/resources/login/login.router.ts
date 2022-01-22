@@ -1,33 +1,27 @@
-import { Router, Request, Response } from 'express';
+import { Router, Request, Response, NextFunction } from 'express';
+import { ClientError } from '../../common/errors/clientError';
 import * as loginService from './login.service';
 
 const router = Router({ mergeParams: true });
 
 router
   .route('/')
-  .post(async (req: Request, res: Response) => {
+  .post(async (req: Request, res: Response, next: NextFunction) => {
     const { login, password } = req.body;
 
     if (!login || !password) {
-      res.status(400).json({
-        message: 'Bad request',
-        description: 'login, password are required field',
-      });
+      next(new ClientError('Bad request', 400));
       return;
     }
 
-    const loginData = await loginService.login(req.body);
+    try {
+      const user = await loginService.login(req.body);
 
-    if (!loginData) {
-      res.status(400).json({
-        message: 'Bad request',
-        description: 'invalid login or password',
-      });
-      return;
+      res.status(200)
+        .json(user);
+    } catch (err) {
+      next(err);
     }
-
-    res.status(200)
-      .json(loginData);
   });
 
 export default router;

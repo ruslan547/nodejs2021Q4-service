@@ -3,6 +3,7 @@ import { compare } from '../../utils/dcryptUtils';
 import { getAll } from '../users/user.service';
 import { PRIVATE_KEY } from '../../common/config';
 import { User } from '../users/user.model';
+import { ClientError } from '../../common/errors/clientError';
 
 interface LoginData {
   login: string;
@@ -13,10 +14,15 @@ export const login = async (data: LoginData) => {
   const password = data.password.toString();
   const users = await getAll();
   const user = users?.find((item) => item.login === data.login);
-  const isLogin = user && await compare(password, user.password);
+
+  if (!user) {
+    throw new ClientError('Forbidden', 403);
+  }
+
+  const isLogin = await compare(password, user.password);
 
   if (!isLogin) {
-    return null;
+    throw new ClientError('Forbidden', 403);
   }
 
   if (!PRIVATE_KEY) {

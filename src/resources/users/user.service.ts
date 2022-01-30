@@ -1,53 +1,111 @@
-import { FindCondition } from 'typeorm';
-import { UpdateData } from '../../common/entity/updatable';
-import { UserOptions } from './user.model';
-import * as usersRepo from './user.memory.repository';
+import { FindCondition, Repository } from 'typeorm';
+import { HttpException, Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { User } from './user.model';
 import { hash } from '../../utils/dcryptUtils';
+import { GetUserDto } from './dto/get-user.dto';
+import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 
-/**
- * Returns all users
- * @returns array of users, User[]
- */
-export const getAll = () => usersRepo.getAll();
+@Injectable()
+export class UserService {
+  // eslint-disable-next-line no-useless-constructor
+  constructor(@InjectRepository(User) private userRepository: Repository<User>) {}
 
-/**
- * Returns User or null
- * @param id id of user
- * @returns User or null
- */
-export const getUser = (id: FindCondition<string> | undefined) => usersRepo.getById(id);
+  /**
+   * Returns all users
+   * @returns array of users, User[]
+   */
+  getAll = async (): Promise<GetUserDto[]> => {
+    const users = await this.userRepository.find() ?? [];
 
-/**
- * Returns User
- * @param data user's data
- * @returns User
- */
-export const createUser = async (data: UserOptions) => {
-  const password = await hash(data.password.toString());
-  const users = await usersRepo.getAll();
-  const isCreated = users?.find((item) => item.login === data.login);
-
-  if (isCreated) {
-    return null;
+    return users.map(User.toResponse);
   }
 
-  return usersRepo.create({ ...data, password });
-};
+  /**
+   * Returns User or null
+   * @param id id of user
+   * @returns User or null
+   */
+  getUser = async (id: FindCondition<string> | undefined) => {
+    const user = await this.userRepository.findOne({ id });
 
-/**
- * Returns User or null
- * @param id user's id
- * @param data user's update data
- * @returns User or null
- */
-export const updateUser = (
-  id: FindCondition<string> | undefined,
-  data: UpdateData,
-) => usersRepo.update(id, data);
+    if (!user) {
+      throw new HttpException('Not found', 404);
+    }
 
-/**
- * Returns User or null
- * @param id user's id
- * @returns User or null
- */
-export const deleteUser = (id: FindCondition<string> | undefined) => usersRepo.deleteById(id);
+    return user;
+  };
+
+  /**
+   * Returns User
+   * @param data user's data
+   * @returns User
+   */
+  createUser = async (data: CreateUserDto) => {
+    const password = await hash(data.password.toString());
+    const createdUser = await this.userRepository.findOne({ login: data.login });
+
+    if (createdUser) {
+      throw new HttpException('Bad request', 400);
+    }
+
+    return this.userRepository.save({ ...data, password });
+  };
+
+  /**
+   * Returns User or null
+   * @param id user's id
+   * @param data user's update data
+   * @returns User or null
+   */
+  updateUser = async (
+    id: FindCondition<string> | undefined,
+    data: UpdateUserDto,
+  ) => {
+    const user = await this.userRepository.findOne({ id });
+
+    if (!user) {
+      throw new HttpException('Not found', 404);
+    }
+
+    user.update(data);
+
+    return this.userRepository.save(user);
+  };
+
+  /**
+   * Returns User or null
+   * @param id user's id
+   * @returns User or null
+   */
+  deleteUser = async (id: FindCondition<string> | undefined) => {
+    //     const user = await usersRepo.deleteById(id);
+
+    //     if (!user) {
+    //       throw new HttpException('Not found', 404);
+    //     }
+
+    //     return user;
+
+    //     const foundUser = await driverManager
+    //     .getRepository(User)?.findOne({ id });
+    // //----------------
+    //   if (foundUser) {
+    //     const tasks = await driverManager.getRepository(Task)?.find({ userId: id });
+
+    //     if (tasks?.length) {
+    //       tasks.forEach(async (item) => {
+    //         // eslint-disable-next-line no-param-reassign
+    //         item.userId = null;
+    //         await driverManager.getRepository(Task)?.save(item);
+    //       });
+    //     }
+
+    //     return driverManager
+    //       .getRepository(User)?.remove(foundUser);
+    //   }
+
+    //   return foundUser;
+  };
+}

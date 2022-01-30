@@ -1,4 +1,6 @@
-export type UpdateData = Record<string, string>;
+import { UpdateUserDto } from '../../resources/users/dto/update-user.dto';
+
+export type UpdateData = Record<string, string> | UpdateUserDto;
 
 export class Updatable {
   update(data: UpdateData) {

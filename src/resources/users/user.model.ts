@@ -1,13 +1,6 @@
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 import { Updatable } from '../../common/entity/updatable';
 
-export interface UserOptions {
-  id: string;
-  name: string;
-  login: string;
-  password: string;
-}
-
 @Entity()
 export class User extends Updatable {
   @PrimaryGeneratedColumn('uuid')

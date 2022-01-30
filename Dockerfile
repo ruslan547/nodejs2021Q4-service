@@ -12,4 +12,5 @@ EXPOSE ${PORT}
 
 RUN mkdir logs && touch logs/log.txt && touch logs/error-log.txt
 
-CMD [ "npm", "start" ]
+CMD [ "npm", "run", "start:dev" ]
+# CMD [ "npm", "start" ]

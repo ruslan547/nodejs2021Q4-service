@@ -3,7 +3,7 @@ import express from 'express';
 import swaggerUI from 'swagger-ui-express';
 import path from 'path';
 import YAML from 'yamljs';
-import userRouter from './resources/users/user.router';
+// import userRouter from './resources/users/user.controller';
 import boardRouter from './resources/boards/board.router';
 import taskRouter from './resources/task/task.router';
 import loginRouter from './resources/login/login.router';
@@ -32,7 +32,7 @@ app.use('/', (req, res, next) => {
 
 app.use('/login', loginRouter);
 app.use(auth);
-app.use('/users', userRouter);
+// app.use('/users', userRouter);
 app.use('/boards', boardRouter);
 app.use('/boards/:boardId/tasks', taskRouter);
 

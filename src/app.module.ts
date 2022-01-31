@@ -6,10 +6,12 @@ import { User } from './resources/users/user.model';
 import { Board } from './resources/boards/board.model';
 import { BoardColumn } from './resources/boards/column.model';
 import { Task } from './resources/task/task.model';
+import { BoardModule } from './resources/boards/board.module';
 
 @Module({
   imports: [
     UserModule,
+    BoardModule,
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: 'postgres',

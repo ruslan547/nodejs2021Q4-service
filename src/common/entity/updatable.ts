@@ -1,6 +1,7 @@
+import { UpdateBoardDto } from '../../resources/boards/dto/update-board.dto';
 import { UpdateUserDto } from '../../resources/users/dto/update-user.dto';
 
-export type UpdateData = Record<string, string> | UpdateUserDto;
+export type UpdateData = Record<string, string> | UpdateUserDto | UpdateBoardDto;
 
 export class Updatable {
   update(data: UpdateData) {

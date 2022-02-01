@@ -3,7 +3,6 @@ import express from 'express';
 import swaggerUI from 'swagger-ui-express';
 import path from 'path';
 import YAML from 'yamljs';
-import taskRouter from './resources/task/task.router';
 import loginRouter from './resources/login/login.router';
 import {
   clientErrorHandler,
@@ -30,7 +29,7 @@ app.use('/', (req, res, next) => {
 
 app.use('/login', loginRouter);
 app.use(auth);
-app.use('/boards/:boardId/tasks', taskRouter);
+// app.use('/boards/:boardId/tasks', taskRouter);
 
 app.use(clientErrorHandler);
 app.use(errorHandler);

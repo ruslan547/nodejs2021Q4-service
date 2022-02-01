@@ -1,16 +1,6 @@
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 import { Updatable } from '../../common/entity/updatable';
 
-export interface TaskOption {
-  id: string;
-  title: string;
-  order: number;
-  description: string
-  userId: string | null;
-  boardId: string;
-  columnId: string;
-}
-
 @Entity()
 export class Task extends Updatable {
   @PrimaryGeneratedColumn('uuid')

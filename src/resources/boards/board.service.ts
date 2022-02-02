@@ -66,7 +66,7 @@ export class BoardService {
     }
 
     board.title = data.title ?? 'title';
-    board.columns = columns.reverse();
+    board.columns = columns;
 
     return this.boardRepository.save(board);
   };

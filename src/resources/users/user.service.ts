@@ -48,13 +48,9 @@ export class UserService {
    */
   createUser = async (data: CreateUserDto) => {
     const password = await hash(data.password.toString());
-    const createdUser = await this.userRepository.findOne({ login: data.login });
+    const user = await this.userRepository.save({ ...data, password });
 
-    if (createdUser) {
-      throw new HttpException('Bad request', 400);
-    }
-
-    return this.userRepository.save({ ...data, password });
+    return User.toResponse(user);
   };
 
   /**

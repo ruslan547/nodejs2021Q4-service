@@ -44,10 +44,11 @@ export class TaskService {
     data: CreateTaskDto,
   ) => {
     const task = new Task();
+    const order = +data.order;
 
     task.boardId = boardId as string;
     task.title = data.title ?? 'title';
-    task.order = +data.order || 1;
+    task.order = Number.isInteger(order) ? order : 1;
     task.description = data.description ?? 'description';
     task.columnId = data.columnId ?? null;
     task.userId = data.userId;

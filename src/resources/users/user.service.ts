@@ -6,11 +6,15 @@ import { hash } from '../../utils/dcryptUtils';
 import { GetUserDto } from './dto/get-user.dto';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { TaskService } from '../task/task.service';
 
 @Injectable()
 export class UserService {
   // eslint-disable-next-line no-useless-constructor
-  constructor(@InjectRepository(User) private userRepository: Repository<User>) {}
+  constructor(
+    @InjectRepository(User) private userRepository: Repository<User>,
+    private taskService: TaskService,
+  ) {}
 
   /**
    * Returns all users
@@ -80,32 +84,20 @@ export class UserService {
    * @returns User or null
    */
   deleteUser = async (id: FindCondition<string> | undefined) => {
-    //     const user = await usersRepo.deleteById(id);
+    const user = await this.userRepository.find({ id });
 
-    //     if (!user) {
-    //       throw new HttpException('Not found', 404);
-    //     }
+    if (!user) {
+      throw new HttpException('Not found', 404);
+    }
 
-    //     return user;
+    const tasks = await this.taskService.getAllByUserId(id);
 
-    //     const foundUser = await driverManager
-    //     .getRepository(User)?.findOne({ id });
-    // //----------------
-    //   if (foundUser) {
-    //     const tasks = await driverManager.getRepository(Task)?.find({ userId: id });
+    tasks.forEach(async (item) => {
+      // eslint-disable-next-line no-param-reassign
+      item.userId = null;
+      await this.taskService.update(item.id, item);
+    });
 
-    //     if (tasks?.length) {
-    //       tasks.forEach(async (item) => {
-    //         // eslint-disable-next-line no-param-reassign
-    //         item.userId = null;
-    //         await driverManager.getRepository(Task)?.save(item);
-    //       });
-    //     }
-
-    //     return driverManager
-    //       .getRepository(User)?.remove(foundUser);
-    //   }
-
-    //   return foundUser;
+    return this.userRepository.remove(user);
   };
 }

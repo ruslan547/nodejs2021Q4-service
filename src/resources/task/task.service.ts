@@ -34,6 +34,12 @@ export class TaskService {
     return task;
   };
 
+  getAllByUserId = async (userId: FindCondition<string> | undefined) => {
+    const tasks = await this.taskRepository.find({ userId });
+
+    return tasks ?? [];
+  }
+
   /**
    * Returns Task
    * @param data task's data
@@ -47,7 +53,7 @@ export class TaskService {
 
     task.boardId = boardId as string;
     task.title = data.title ?? 'title';
-    task.order = +data.order ?? 1;
+    task.order = +data.order || 1;
     task.description = data.description ?? 'description';
     task.columnId = data.columnId ?? null;
     task.userId = data.userId;

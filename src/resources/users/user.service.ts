@@ -6,14 +6,14 @@ import { hash } from '../../utils/dcryptUtils';
 import { GetUserDto } from './dto/get-user.dto';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { TaskService } from '../task/task.service';
+import { Task } from '../task/task.model';
 
 @Injectable()
 export class UserService {
   // eslint-disable-next-line no-useless-constructor
   constructor(
     @InjectRepository(User) private userRepository: Repository<User>,
-    private taskService: TaskService,
+    @InjectRepository(Task) private taskRepository: Repository<Task>,
   ) {}
 
   /**
@@ -83,19 +83,19 @@ export class UserService {
    * @param id user's id
    * @returns User or null
    */
-  deleteUser = async (id: FindCondition<string> | undefined) => {
-    const user = await this.userRepository.find({ id });
+  deleteUser = async (userId: FindCondition<string> | undefined) => {
+    const user = await this.userRepository.findOne({ id: userId });
 
     if (!user) {
       throw new HttpException('Not found', 404);
     }
 
-    const tasks = await this.taskService.getAllByUserId(id);
+    const tasks = await this.taskRepository.find({ userId });
 
     tasks.forEach(async (item) => {
       // eslint-disable-next-line no-param-reassign
       item.userId = null;
-      await this.taskService.update(item.id, item);
+      await this.taskRepository.save(item);
     });
 
     return this.userRepository.remove(user);

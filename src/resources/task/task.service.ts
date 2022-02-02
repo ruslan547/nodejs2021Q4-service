@@ -34,12 +34,6 @@ export class TaskService {
     return task;
   };
 
-  getAllByUserId = async (userId: FindCondition<string> | undefined) => {
-    const tasks = await this.taskRepository.find({ userId });
-
-    return tasks ?? [];
-  }
-
   /**
    * Returns Task
    * @param data task's data

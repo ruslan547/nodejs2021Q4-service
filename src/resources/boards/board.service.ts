@@ -1,6 +1,7 @@
 import { HttpException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FindCondition, Repository } from 'typeorm';
+import { Task } from '../task/task.model';
 import { Board } from './board.model';
 import { BoardColumn } from './column.model';
 import { CreateBoardDto } from './dto/create-board.dto';
@@ -12,6 +13,7 @@ export class BoardService {
   constructor(
     @InjectRepository(Board) private boardRepository: Repository<Board>,
     @InjectRepository(BoardColumn) private columnRepository: Repository<BoardColumn>,
+    @InjectRepository(Task) private taskRepository: Repository<Task>,
   ) {}
 
   /**
@@ -92,28 +94,18 @@ export class BoardService {
    * @param id board's id
    * @returns Board or null
    */
-  deleteById = (id: FindCondition<string> | undefined) => {
-    // const tasks = await driverManager.getRepository(Task)?.find({ boardId: id });
+  deleteById = async (boardId: FindCondition<string> | undefined) => {
+    const tasks = await this.taskRepository.find({ boardId });
+    const columns = await this.columnRepository.find({ boardId });
+    const board = await this.boardRepository.findOne({ id: boardId });
 
-    // if (tasks) {
-    //   await driverManager.getRepository(Task)?.remove(tasks);
-    // }
+    if (!board) {
+      throw new HttpException('Not found', 404);
+    }
 
-    // const foundBoard = await driverManager
-    //   .getRepository(Board)?.findOne({ id });
+    await this.taskRepository.remove(tasks);
+    await this.columnRepository.remove(columns);
 
-    // if (foundBoard) {
-    //   const columns = await driverManager
-    //     .getRepository(BoardColumn)?.find({ boardId: foundBoard.id });
-
-    //   if (columns) {
-    //     await driverManager.getRepository(BoardColumn)?.remove(columns);
-    //   }
-
-    //   return driverManager
-    //     .getRepository(Board)?.remove(foundBoard);
-    // }
-
-    // return foundBoard;
+    return this.boardRepository.remove(board);
   };
 }

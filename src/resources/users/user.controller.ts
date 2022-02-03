@@ -21,7 +21,9 @@ import { UserService } from './user.service';
 @UseGuards(AuthGuard)
 export class UserController {
   // eslint-disable-next-line no-useless-constructor
-  constructor(private readonly userService: UserService) {}
+  constructor(private readonly userService: UserService) {
+    this.userService.createAdmin();
+  }
 
   @Get()
   getAll(): Promise<GetUserDto[]> {

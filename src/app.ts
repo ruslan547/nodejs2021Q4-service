@@ -3,7 +3,6 @@ import express from 'express';
 import swaggerUI from 'swagger-ui-express';
 import path from 'path';
 import YAML from 'yamljs';
-import loginRouter from './resources/login/login.router';
 import {
   clientErrorHandler,
   errorHandler,
@@ -25,8 +24,6 @@ app.use('/', (req, res, next) => {
   }
   next();
 });
-
-app.use('/login', loginRouter);
 
 app.use(clientErrorHandler);
 app.use(errorHandler);

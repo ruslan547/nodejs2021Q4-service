@@ -1,37 +1,45 @@
 import jwt from 'jsonwebtoken';
+import { HttpException, Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { compare } from '../../utils/dcryptUtils';
-// import { getAll } from '../users/user.service';
 import { PRIVATE_KEY } from '../../common/config';
 import { User } from '../users/user.model';
 import { ClientError } from '../../common/errors/clientError';
+import { LoginDto } from './dto/login.dto';
+import { GetLoginDto } from './dto/get-login.dto';
 
-interface LoginData {
-  login: string;
-  password: string;
-}
+@Injectable()
+export class LoginService {
+  // eslint-disable-next-line no-useless-constructor
+  constructor(@InjectRepository(User) private userRepository: Repository<User>) {}
 
-export const login = async (data: LoginData) => {
-  const password = data.password.toString();
-  // const users = await getAll();
-  const users: User[] = [];
-  const user = users?.find((item) => item.login === data.login);
+  login = async (data: LoginDto): Promise<GetLoginDto> => {
+    const { login, password } = data;
 
-  if (!user) {
-    throw new ClientError('Forbidden', 403);
-  }
+    if (!login || !password) {
+      throw new HttpException('Bad request', 400);
+    }
 
-  const isLogin = await compare(password, user.password);
+    const user = await this.userRepository.findOne({ login: data.login });
 
-  if (!isLogin) {
-    throw new ClientError('Forbidden', 403);
-  }
+    if (!user) {
+      throw new HttpException('Forbidden', 403);
+    }
 
-  if (!PRIVATE_KEY) {
-    throw new Error('PRIVATE_KEY is miss');
-  }
+    const isLogin = await compare(password.toString(), user.password);
 
-  return {
-    ...User.toResponse(user),
-    token: jwt.sign({ userId: user.id, login: user.login }, PRIVATE_KEY),
+    if (!isLogin) {
+      throw new ClientError('Forbidden', 403);
+    }
+
+    if (!PRIVATE_KEY) {
+      throw new ClientError('PRIVATE_KEY is miss', 500);
+    }
+
+    return {
+      ...User.toResponse(user),
+      token: jwt.sign({ userId: user.id, login: user.login }, PRIVATE_KEY),
+    };
   };
-};
+}

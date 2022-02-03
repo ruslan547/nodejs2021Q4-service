@@ -8,6 +8,8 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { Task } from '../task/task.model';
 
+const ADMIN = 'admin';
+
 @Injectable()
 export class UserService {
   // eslint-disable-next-line no-useless-constructor
@@ -95,5 +97,16 @@ export class UserService {
     });
 
     return this.userRepository.remove(user);
+  };
+
+  createAdmin = async () => {
+    const login = ADMIN;
+    const admin = await this.userRepository.findOne({ login });
+
+    if (!admin) {
+      const password = await hash(ADMIN);
+
+      await this.userRepository.save({ name: ADMIN, login, password });
+    }
   };
 }

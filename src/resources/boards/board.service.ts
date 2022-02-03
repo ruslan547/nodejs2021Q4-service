@@ -1,4 +1,4 @@
-import { HttpException, Injectable } from '@nestjs/common';
+import { HttpCode, HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FindCondition, Repository } from 'typeorm';
 import { Task } from '../task/task.model';
@@ -32,7 +32,7 @@ export class BoardService {
       .findOne({ id }, { relations: ['columns'] });
 
     if (!board) {
-      throw new HttpException('Not found', 404);
+      throw new HttpException('Not found', HttpStatus.NOT_FOUND);
     }
 
     return board;
@@ -81,7 +81,7 @@ export class BoardService {
     const foundBoard = await this.boardRepository.findOne({ id });
 
     if (!foundBoard) {
-      throw new HttpException('Not found', 404);
+      throw new HttpException('Not found', HttpStatus.NOT_FOUND);
     }
 
     foundBoard.update(data);
@@ -100,7 +100,7 @@ export class BoardService {
     const board = await this.boardRepository.findOne({ id: boardId });
 
     if (!board) {
-      throw new HttpException('Not found', 404);
+      throw new HttpException('Not found', HttpStatus.NOT_FOUND);
     }
 
     await this.taskRepository.remove(tasks);

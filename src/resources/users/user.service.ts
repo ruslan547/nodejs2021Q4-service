@@ -1,5 +1,5 @@
 import { FindCondition, Repository } from 'typeorm';
-import { HttpException, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './user.model';
 import { hash } from '../../utils/dcryptUtils';
@@ -37,7 +37,7 @@ export class UserService {
     const user = await this.userRepository.findOne({ id });
 
     if (!user) {
-      throw new HttpException('Not found', 404);
+      throw new HttpException('Not found', HttpStatus.NOT_FOUND);
     }
 
     return user;
@@ -49,6 +49,12 @@ export class UserService {
    * @returns User
    */
   createUser = async (data: CreateUserDto) => {
+    const { login, name } = data;
+
+    if (!login || !data.password || !name) {
+      throw new HttpException('Bad request', HttpStatus.BAD_REQUEST);
+    }
+
     const password = await hash(data.password.toString());
     const user = await this.userRepository.save({ ...data, password });
 
@@ -68,7 +74,7 @@ export class UserService {
     const user = await this.userRepository.findOne({ id });
 
     if (!user) {
-      throw new HttpException('Not found', 404);
+      throw new HttpException('Not found', HttpStatus.NOT_FOUND);
     }
 
     user.update(data);
@@ -85,7 +91,7 @@ export class UserService {
     const user = await this.userRepository.findOne({ id: userId });
 
     if (!user) {
-      throw new HttpException('Not found', 404);
+      throw new HttpException('Not found', HttpStatus.NOT_FOUND);
     }
 
     const tasks = await this.taskRepository.find({ userId });

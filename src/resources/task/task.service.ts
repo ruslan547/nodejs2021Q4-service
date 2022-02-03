@@ -1,4 +1,4 @@
-import { HttpException, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FindCondition, Repository } from 'typeorm';
 import { CreateTaskDto } from './dto/create-task.dto';
@@ -28,7 +28,7 @@ export class TaskService {
     const task = await this.taskRepository.findOne({ id });
 
     if (!task) {
-      throw new HttpException('Not found', 404);
+      throw new HttpException('Not found', HttpStatus.NOT_FOUND);
     }
 
     return task;
@@ -69,7 +69,7 @@ export class TaskService {
     const foundTask = await this.taskRepository.findOne({ id });
 
     if (!foundTask) {
-      throw new HttpException('Not found', 404);
+      throw new HttpException('Not found', HttpStatus.NOT_FOUND);
     }
 
     foundTask.update(data);
@@ -86,7 +86,7 @@ export class TaskService {
     const foundTask = await this.taskRepository.findOne({ id });
 
     if (!foundTask) {
-      throw new HttpException('Not found', 404);
+      throw new HttpException('Not found', HttpStatus.NOT_FOUND);
     }
 
     return this.taskRepository.remove(foundTask);

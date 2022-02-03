@@ -11,7 +11,7 @@ import {
   Put,
   UseGuards,
 } from '@nestjs/common';
-import { AuthGuard } from '../../utils/auth.guard';
+import { AuthGuard } from '../../guards/auth.guard';
 import { CreateUserDto } from './dto/create-user.dto';
 import { GetUserDto } from './dto/get-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -38,12 +38,6 @@ export class UserController {
   @Post()
   @HttpCode(HttpStatus.CREATED)
   create(@Body() creatUserDto: CreateUserDto): Promise<GetUserDto | undefined> {
-    const { login, password, name } = creatUserDto;
-
-    if (!login || !password || !name) {
-      throw new HttpException('Bad request', HttpStatus.BAD_REQUEST);
-    }
-
     return this.userService.createUser(creatUserDto);
   }
 

@@ -9,13 +9,16 @@ import {
   Param,
   Post,
   Put,
+  UseGuards,
 } from '@nestjs/common';
+import { AuthGuard } from '../../utils/auth.guard';
 import { CreateUserDto } from './dto/create-user.dto';
 import { GetUserDto } from './dto/get-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserService } from './user.service';
 
 @Controller('users')
+@UseGuards(AuthGuard)
 export class UserController {
   // eslint-disable-next-line no-useless-constructor
   constructor(private readonly userService: UserService) {}

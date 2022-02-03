@@ -8,7 +8,9 @@ import {
   Param,
   Post,
   Put,
+  UseGuards,
 } from '@nestjs/common';
+import { AuthGuard } from '../../utils/auth.guard';
 import { CreateTaskDto } from '../task/dto/create-task.dto';
 import { GetTaskDto } from '../task/dto/get-task.dto';
 import { UpdateTaskDto } from '../task/dto/update-task.dto';
@@ -19,6 +21,7 @@ import { GetBoardDto } from './dto/get-board.dto';
 import { UpdateBoardDto } from './dto/update-board.dto';
 
 @Controller('boards')
+@UseGuards(AuthGuard)
 export class BoardController {
   // eslint-disable-next-line no-useless-constructor
   constructor(

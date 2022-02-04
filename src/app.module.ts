@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from './resources/users/user.module';
 import { POSTGRES_PORT, POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_DB } from './common/dbConfig';
@@ -8,6 +8,7 @@ import { BoardColumn } from './resources/boards/column.model';
 import { Task } from './resources/task/task.model';
 import { BoardModule } from './resources/boards/board.module';
 import { LoginModule } from './resources/login/login.module';
+import { AppLoggerMiddleware } from './middleware/logger';
 
 @Module({
   imports: [
@@ -34,4 +35,9 @@ import { LoginModule } from './resources/login/login.module';
   controllers: [],
   providers: [],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  // eslint-disable-next-line class-methods-use-this
+  configure(consumer: MiddlewareConsumer): void {
+    consumer.apply(AppLoggerMiddleware).forRoutes('*');
+  }
+}

@@ -1,6 +1,6 @@
-import { UpdateBoardDto } from '../../resources/boards/dto/update-board.dto';
-import { UpdateTaskDto } from '../../resources/task/dto/update-task.dto';
-import { UpdateUserDto } from '../../resources/users/dto/update-user.dto';
+import { UpdateBoardDto } from '../resources/boards/dto/update-board.dto';
+import { UpdateTaskDto } from '../resources/task/dto/update-task.dto';
+import { UpdateUserDto } from '../resources/users/dto/update-user.dto';
 
 export type UpdateData = UpdateUserDto | UpdateBoardDto | UpdateTaskDto;
 

@@ -5,7 +5,6 @@ import { Repository } from 'typeorm';
 import { compare } from '../../utils/dcryptUtils';
 import { PRIVATE_KEY } from '../../common/config';
 import { User } from '../users/user.model';
-import { ClientError } from '../../common/errors/clientError';
 import { LoginDto } from './dto/login.dto';
 import { GetLoginDto } from './dto/get-login.dto';
 
@@ -30,11 +29,11 @@ export class LoginService {
     const isLogin = await compare(password.toString(), user.password);
 
     if (!isLogin) {
-      throw new ClientError('Forbidden', HttpStatus.FORBIDDEN);
+      throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
     }
 
     if (!PRIVATE_KEY) {
-      throw new ClientError('PRIVATE_KEY is miss', HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new HttpException('PRIVATE_KEY is miss', HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     return {

@@ -1,5 +1,5 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
-import { Updatable } from '../../common/entity/updatable';
+import { Updatable } from '../../utils/updatable';
 import { BoardColumn } from './column.model';
 
 @Entity()

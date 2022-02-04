@@ -1,5 +1,5 @@
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
-import { Updatable } from '../../common/entity/updatable';
+import { Updatable } from '../../utils/updatable';
 
 @Entity()
 export class User extends Updatable {

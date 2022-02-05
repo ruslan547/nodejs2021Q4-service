@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    div {
+      width: 300px;
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+    img {
+      width: 320px;
+      height: 240px;
+    }
+    .err {
+      color: red;
+    }
+  </style>
+</head>
+
+<body>
+  <div>
+    <input id="file" type="file"/>
+    <button id="upload">upload</button>
+  </div>
+  <div>
+    <input id="name"/>
+    <button id="download">download</button>
+  </div>
+  <div id="info"></div>
+  <img alt="" src=""/>
+
+
+  <script>
+    const token = `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJhNjFkZDg3Yy01Y2Y0LTRjN2EtYTk2Yy1iY2Q2ZDY5ZjAyNzgiLCJsb2dpbiI6ImFkbWluIiwiaWF0IjoxNjQzOTE3NjE0fQ.Iv3_bhxW2yCAB7qPSC6BVsJfOe-KrbqtnNGZZz5ou9k`
+    const fileInput = document.querySelector('#file');
+    const upload = document.querySelector('#upload');
+    const download = document.querySelector('#download');
+    const img = document.querySelector('img');
+    const info = document.querySelector('#info');
+
+    const handleErr = (err) => {
+      info.innerHTML = `<span class="err">Error: ${err.message}</span>`;
+    }
+
+    const handleSendClick = () => {
+      const data = new FormData();
+      data.append('file', fileInput.files[0]);
+
+      fetch('http://localhost:4000/file', {
+        method: 'POST',
+        body: data,
+        headers: { Authorization: token }
+      })
+        .then(response => {
+          if (response.status !== 201) {
+            throw new Error(response.statusText);
+          }
+          return response.body;
+        })
+        .then((body) => {
+          const reader = body.getReader();
+
+          reader.read().then(async ({ value }) => {
+            const blob = new Blob([value], {'type': 'application/json'});
+            const text = await (new Response(blob)).json();
+
+            console.log(text)
+            info.innerHTML = `Filename: <span class="err">${text.filename}</span>`;
+          })
+        })
+        .catch(handleErr);
+    };
+
+    const handleDownloadClick = () => {
+      const nameInput = document.querySelector('#name');
+
+      fetch(`http://localhost:4000/file/${nameInput.value}`, {
+        headers: { Authorization: token }
+      })
+        .then(response => {
+          if (response.status !== 200) {
+            throw new Error(response.statusText);
+          }
+          return response.body;
+        })
+        .then(body => {
+          const reader = body.getReader();
+
+          reader.read().then(({ value }) => {
+            const blob = new Blob([value], {'type': 'image/jpg'});
+            const url = URL.createObjectURL(blob);
+
+            if (info.innerHTML.includes('Error')) {
+              info.textContent = '';
+            }
+            document.querySelector('img').src = url;
+          })
+        })
+        .catch(handleErr);
+    };
+
+    upload.addEventListener('click', handleSendClick);
+    download.addEventListener('click', handleDownloadClick);
+  </script>
+</body>
+</html>

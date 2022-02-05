@@ -1,5 +1,7 @@
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 import { UserModule } from './resources/users/user.module';
 import { POSTGRES_PORT, POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_DB } from './common/dbConfig';
 import { User } from './resources/users/user.model';
@@ -10,12 +12,14 @@ import { BoardModule } from './resources/boards/board.module';
 import { LoginModule } from './resources/login/login.module';
 import { AppLoggerMiddleware } from './middleware/logger';
 import { AppController } from './app.controller';
+import { FileModule } from './resources/file/file.module';
 
 @Module({
   imports: [
     UserModule,
     BoardModule,
     LoginModule,
+    FileModule,
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: 'postgres',
@@ -31,6 +35,9 @@ import { AppController } from './app.controller';
       ],
       synchronize: true,
       logging: false,
+    }),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'public'),
     }),
   ],
   controllers: [AppController],

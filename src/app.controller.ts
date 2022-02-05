@@ -1,10 +1,13 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Res } from '@nestjs/common';
+import { Response } from 'express';
 
 @Controller('/')
 export class AppController {
   @Get()
   // eslint-disable-next-line class-methods-use-this
-  getServer(): string {
-    return 'server is working...';
+  getServer(@Res() res: Response) {
+    res.sendFile('index.html', {
+      root: 'public',
+    });
   }
 }

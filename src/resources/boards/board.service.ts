@@ -65,7 +65,6 @@ export class BoardService {
       columns.push(column);
     }
 
-    columns.sort((a, b) => a.order - b.order);
     board.title = data.title ?? 'title';
     board.columns = columns;
 

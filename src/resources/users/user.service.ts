@@ -49,12 +49,6 @@ export class UserService {
    * @returns User
    */
   createUser = async (data: CreateUserDto) => {
-    const { login, name } = data;
-
-    if (!login || !data.password || !name) {
-      throw new HttpException('Bad request', HttpStatus.BAD_REQUEST);
-    }
-
     const password = await hash(data.password.toString());
     const user = await this.userRepository.save({ ...data, password });
 

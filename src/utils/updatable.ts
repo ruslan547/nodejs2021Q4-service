@@ -11,7 +11,7 @@ export class Updatable {
       .forEach(([key, value]) => {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
-        this[key] = value;
+        this[key] = value ?? this[key];
       });
 
     return this;

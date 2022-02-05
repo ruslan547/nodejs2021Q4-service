@@ -15,12 +15,7 @@ export class LoginService {
 
   login = async (data: LoginDto): Promise<GetLoginDto> => {
     const { login, password } = data;
-
-    if (!login || !password) {
-      throw new HttpException('Bad request', HttpStatus.BAD_REQUEST);
-    }
-
-    const user = await this.userRepository.findOne({ login: data.login });
+    const user = await this.userRepository.findOne({ login });
 
     if (!user) {
       throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);

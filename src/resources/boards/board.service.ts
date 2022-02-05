@@ -1,4 +1,4 @@
-import { HttpCode, HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FindCondition, Repository } from 'typeorm';
 import { Task } from '../task/task.model';
@@ -65,6 +65,7 @@ export class BoardService {
       columns.push(column);
     }
 
+    columns.sort((a, b) => a.order - b.order);
     board.title = data.title ?? 'title';
     board.columns = columns;
 

@@ -1,5 +1,13 @@
 # RS School REST service
 
+## Task10/Nest.js
+
+- need to put password in .env file
+
+    ```POSTGRES_PASSWORD=postgres```
+
+- ```docker compose up --build```
+
 ## Task9/Authentication & JWT
 
 - need to put password in .env file

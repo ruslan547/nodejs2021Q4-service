@@ -9,6 +9,7 @@ import { Task } from './resources/task/task.model';
 import { BoardModule } from './resources/boards/board.module';
 import { LoginModule } from './resources/login/login.module';
 import { AppLoggerMiddleware } from './middleware/logger';
+import { AppController } from './app.controller';
 
 @Module({
   imports: [
@@ -32,7 +33,7 @@ import { AppLoggerMiddleware } from './middleware/logger';
       logging: false,
     }),
   ],
-  controllers: [],
+  controllers: [AppController],
   providers: [],
 })
 export class AppModule implements NestModule {
